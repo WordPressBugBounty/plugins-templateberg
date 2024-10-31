@@ -1,0 +1,1045 @@
+# Copyright (C) 2024 templateberg
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Templateberg - Gutenberg Templates, WordPress Themes Template Kits & WordPress Templates 1.1.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/templateberg\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-10-31T11:30:50+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.6.0\n"
+"X-Domain: templateberg\n"
+
+#. Plugin Name of the plugin
+msgid "Templateberg - Gutenberg Templates, WordPress Themes Template Kits & WordPress Templates"
+msgstr ""
+
+#. Description of the plugin
+msgid "Easily Import pre-designed templates with starter content on your website and instantly build an elegant website with WordPress. Templateberg content Gutenberg Templates, Patterns and WordPress Theme Template Kits."
+msgstr ""
+
+#. Author of the plugin
+msgid "templateberg"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.templateberg.com/"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:191
+#: includes/admin/class-templateberg-connect.php:199
+#: includes/admin/class-templateberg-connect.php:207
+#: includes/admin/class-templateberg-connect.php:215
+msgid "Agency"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:195
+#: includes/admin/class-templateberg-connect.php:203
+#: includes/admin/class-templateberg-connect.php:211
+#: includes/admin/class-templateberg-connect.php:219
+#: includes/admin/templates/account.php:221
+msgid "Business"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:560
+#: includes/admin/class-templateberg-connect.php:561
+#: includes/admin/templates/getting-started.php:22
+#: includes/class-templateberg-hooks.php:207
+#: includes/class-templateberg.php:107
+#: includes/lists/templates/getting-started.php:12
+#: includes/lists/templates/theme-buy-preview.php:108
+#: includes/lists/templates/theme-buy-preview.php:113
+#: src/import/advanced-import/index.js:52
+#: src/import/advanced-import/index.js:109
+#: src/import/advanced-import/index.js:201
+#: src/import/advanced-import/index.js:203
+msgid "Templateberg"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:632
+msgid "Sorry, we could not connect. Please try again."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:635
+#: includes/admin/class-templateberg-connect.php:675
+msgid "Back to Admin"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:672
+msgid "Sorry, we could not disconnect. Please try again."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:695
+msgid "What is Templateberg?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:696
+msgid "A collection of pre-designed template and template kits library for WordPress. Templateberg includes a variety of templates for all kinds of websites from any niche to multipurpose including blog, magazine, eCommerce, travel, business, medical, construction, photography, education, fitness, automotive, portfolio, restaurant, multipurpose and much more. Templateberg facilitates to import of pre-designed template with starter content on the user website so that user can quickly build a beautiful website with WordPress."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:699
+msgid "What is a Gutenberg block?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:700
+msgid "A section of a website page created with Gutenberg or Gutenberg Addons plugin. It is the most modern way to design a website. The possibility is endless to create any page design by importing and combing the block section."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:704
+msgid "What is a Gutenberg template?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:705
+msgid "A full-page pre-designed of a single page of a website with starter content created with Gutenberg block. It can be a home page, about, service, contact, pop-ups, products, pricing or any landing pages."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:708
+msgid "What is a Gutenberg template kit?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:709
+msgid "A collection of cohesive pre-designed Gutenberg templates with all pages for a niche/multipurpose website focusing on a similar design concept."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:712
+msgid "What is Gutentor?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:713
+msgid "Gutentor is a WordPress plugin based on WordPress Block (Gutenberg) Editor, modern drag & drop WordPress page builder Know more about it on %1$sGutentor official website%2$s."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:716
+msgid "What is a WordPress Theme Template Kit?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:717
+msgid "A pre-designed starter content for a specific theme that you can simply import on your site with a click. In other words, it can be called Demo Content for the theme."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:720
+msgid "How Gutenberg Template Kit is different from Theme Template Kit?"
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:721
+msgid "Gutenberg Template Kit is designed on WordPress Gutenberg Block Editor whereas Theme Template Kit is designed for the specific theme. Templates from Gutenberg Template Kits can be imported individually on a single page/post but when you import Theme Template Kit all content and pages import at once. Gutenberg Template Kit will work on any Theme but Theme Template Kit will work on a single theme it is created from."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:742
+msgid "Sorry, you are not allowed to install plugins on this site."
+msgstr ""
+
+#: includes/admin/class-templateberg-connect.php:810
+msgid "Unable to connect to the filesystem. Please confirm your credentials."
+msgstr ""
+
+#: includes/admin/class-templateberg-template-api.php:548
+#: includes/admin/class-templateberg-template-api.php:906
+msgid "Something went wrong. Please contact to templateberg.com"
+msgstr ""
+
+#: includes/admin/class-templateberg-template-api.php:1019
+#: includes/admin/class-templateberg-template-api.php:1031
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/admin/templates/account.php:26
+msgid "Contact Information"
+msgstr ""
+
+#: includes/admin/templates/account.php:32
+msgid "Support:"
+msgstr ""
+
+#: includes/admin/templates/account.php:35
+msgid "Create A Ticket"
+msgstr ""
+
+#: includes/admin/templates/account.php:42
+msgid "Email:"
+msgstr ""
+
+#: includes/admin/templates/account.php:45
+msgid "support@templateberg.com"
+msgstr ""
+
+#: includes/admin/templates/account.php:51
+msgid "Social Network"
+msgstr ""
+
+#: includes/admin/templates/account.php:78
+msgid "Connections"
+msgstr ""
+
+#: includes/admin/templates/account.php:83
+msgid "Site Connection"
+msgstr ""
+
+#: includes/admin/templates/account.php:105
+msgid "Your Site is connected to Templateberg.com"
+msgstr ""
+
+#: includes/admin/templates/account.php:111
+msgid "Enjoy Templateberg."
+msgstr ""
+
+#: includes/admin/templates/account.php:121
+msgid "Manage Connection"
+msgstr ""
+
+#: includes/admin/templates/account.php:129
+msgid "Account Connection"
+msgstr ""
+
+#: includes/admin/templates/account.php:136
+msgid "Connected as"
+msgstr ""
+
+#: includes/admin/templates/account.php:147
+msgid "Manage Account"
+msgstr ""
+
+#: includes/admin/templates/account.php:158
+msgid "Purchase Information"
+msgstr ""
+
+#: includes/admin/templates/account.php:161
+msgid "Sync"
+msgstr ""
+
+#: includes/admin/templates/account.php:176
+msgid "Available Templates"
+msgstr ""
+
+#: includes/admin/templates/account.php:179
+#: includes/lists/class-templateberg-themes-template-kits.php:73
+#: includes/lists/class-templateberg-themes-template-kits.php:74
+msgid "Themes Template Kits"
+msgstr ""
+
+#: includes/admin/templates/account.php:182
+#: includes/admin/templates/getting-started.php:77
+#: includes/lists/class-templateberg-gutenberg-templates.php:70
+#: includes/lists/class-templateberg-gutenberg-templates.php:71
+msgid "Gutenberg Templates"
+msgstr ""
+
+#: includes/admin/templates/account.php:209
+msgid "Templateberg power you to create site quickly and easily."
+msgstr ""
+
+#: includes/admin/templates/account.php:210
+msgid "You don't have to spend hours trying to create a template and block design."
+msgstr ""
+
+#: includes/admin/templates/account.php:211
+msgid "With a click the block and template will import on your site and you can change text, image and customize it for your needs."
+msgstr ""
+
+#: includes/admin/templates/account.php:212
+msgid "Once you disconnect Templateberg, these features will no longer be available and you may no longer create design faster."
+msgstr ""
+
+#: includes/admin/templates/account.php:214
+msgid "Templateberg power you to create any of the following websites."
+msgstr ""
+
+#: includes/admin/templates/account.php:216
+msgid "Blog"
+msgstr ""
+
+#: includes/admin/templates/account.php:217
+msgid "News & Magazine"
+msgstr ""
+
+#: includes/admin/templates/account.php:218
+msgid "Multipurpose"
+msgstr ""
+
+#: includes/admin/templates/account.php:219
+msgid "Ecommerce/WooCommerce"
+msgstr ""
+
+#: includes/admin/templates/account.php:220
+msgid "Easy Digital Downloads"
+msgstr ""
+
+#: includes/admin/templates/account.php:222
+msgid "Finance"
+msgstr ""
+
+#: includes/admin/templates/account.php:223
+msgid "Automotive"
+msgstr ""
+
+#: includes/admin/templates/account.php:224
+msgid "Consultant"
+msgstr ""
+
+#: includes/admin/templates/account.php:225
+msgid "Medical"
+msgstr ""
+
+#: includes/admin/templates/account.php:226
+msgid "Education"
+msgstr ""
+
+#: includes/admin/templates/account.php:227
+msgid "Photography"
+msgstr ""
+
+#: includes/admin/templates/account.php:228
+msgid "Construction"
+msgstr ""
+
+#: includes/admin/templates/account.php:229
+msgid "Travel"
+msgstr ""
+
+#: includes/admin/templates/account.php:230
+msgid "Fitness"
+msgstr ""
+
+#: includes/admin/templates/account.php:231
+msgid "Restaurant"
+msgstr ""
+
+#: includes/admin/templates/account.php:232
+msgid "Lawyer"
+msgstr ""
+
+#: includes/admin/templates/account.php:233
+msgid "Charity"
+msgstr ""
+
+#: includes/admin/templates/account.php:234
+msgid "Portfolio"
+msgstr ""
+
+#: includes/admin/templates/account.php:235
+msgid "Beauty"
+msgstr ""
+
+#: includes/admin/templates/account.php:236
+msgid "And many more...."
+msgstr ""
+
+#: includes/admin/templates/account.php:240
+msgid "Have a question? We’d love to help! Send a question to the Templateberg support team."
+msgstr ""
+
+#: includes/admin/templates/account.php:242
+msgid "Send a question"
+msgstr ""
+
+#: includes/admin/templates/account.php:248
+msgid "Are you sure you want to disconnect?"
+msgstr ""
+
+#: includes/admin/templates/account.php:251
+msgid "Cancel"
+msgstr ""
+
+#: includes/admin/templates/account.php:254
+msgid "Reset Connect"
+msgstr ""
+
+#: includes/admin/templates/account.php:257
+msgid "Disconnect"
+msgstr ""
+
+#: includes/admin/templates/faq.php:4
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:10
+#: includes/admin/templates/header.php:5
+msgid "Welcome to Templateberg"
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:25
+msgid "Get access to hundreds of free WordPress templates by creating free account."
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:28
+#: includes/admin/templates/header.php:8
+#: includes/lists/templates/current-theme.php:26
+#: includes/lists/templates/getting-started.php:20
+#: src/import/advanced-import/import-modal.js:1148
+msgid "Templateberg power you to create site quickly and easily. You don't have to spend hours trying to create a template and block design. With a click your favourite template design will import on your site and you can change text, image and customize it for your needs."
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:29
+msgid "Clicking the button below will also install and activate the Gutentor Plugin since most of the templates are built with it."
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:33
+#: includes/lists/templates/getting-started.php:29
+#: src/import/advanced-import/import-modal.js:1155
+msgid "Get Started With Templateberg"
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:44
+msgid "Free Templates"
+msgstr ""
+
+#: includes/admin/templates/getting-started.php:80
+msgid "Theme Template Kits"
+msgstr ""
+
+#: includes/admin/templates/header.php:11
+msgid "Get Started With New Page"
+msgstr ""
+
+#: includes/admin/templates/header.php:14
+#: includes/lists/templates/gutenberg.php:127
+#: src/import/advanced-import/import-modal.js:1215
+#: src/import/advanced-import/my-purchase-data.js:549
+msgid "Template Kits"
+msgstr ""
+
+#: includes/class-templateberg-hooks.php:166
+msgid "Error! Not Connected to templateberg.com"
+msgstr ""
+
+#: includes/class-templateberg-hooks.php:167
+msgid "Error! Fail to sync."
+msgstr ""
+
+#: includes/class-templateberg-hooks.php:264
+msgid "Getting Started"
+msgstr ""
+
+#: includes/functions.php:20
+msgid "ID"
+msgstr ""
+
+#: includes/functions.php:23
+msgid "Type"
+msgstr ""
+
+#: includes/functions.php:26
+msgid "Name"
+msgstr ""
+
+#: includes/functions.php:29
+msgid "Date"
+msgstr ""
+
+#: includes/functions.php:32
+msgid "Amount"
+msgstr ""
+
+#: includes/functions.php:35
+msgid "Limit"
+msgstr ""
+
+#: includes/functions.php:38
+msgid "Plan"
+msgstr ""
+
+#: includes/functions.php:41
+#: src/import/advanced-import/import-modal.js:904
+msgid "Details"
+msgstr ""
+
+#: includes/functions.php:95
+msgid "No payment information found"
+msgstr ""
+
+#: includes/functions.php:118
+msgid "No template information found"
+msgstr ""
+
+#: includes/functions.php:237
+msgid "Previous"
+msgstr ""
+
+#: includes/functions.php:254
+#: src/import/advanced-import/pagination.js:28
+msgid "1"
+msgstr ""
+
+#: includes/functions.php:280
+msgid "Next"
+msgstr ""
+
+#: includes/functions.php:388
+#: includes/functions.php:473
+#: includes/functions.php:555
+#: includes/functions.php:642
+msgid " not exists"
+msgstr ""
+
+#: includes/functions.php:390
+#: includes/functions.php:475
+#: includes/functions.php:557
+#: includes/functions.php:644
+msgid " created"
+msgstr ""
+
+#: includes/functions.php:392
+#: includes/functions.php:477
+#: includes/functions.php:559
+#: includes/functions.php:646
+msgid " create permission issue"
+msgstr ""
+
+#: includes/functions.php:395
+#: includes/functions.php:480
+#: includes/functions.php:562
+#: includes/functions.php:649
+msgid " exists"
+msgstr ""
+
+#: includes/functions.php:400
+#: includes/functions.php:485
+#: includes/functions.php:567
+#: includes/functions.php:654
+msgid "Successfully created file "
+msgstr ""
+
+#: includes/functions.php:402
+#: includes/functions.php:487
+#: includes/functions.php:569
+#: includes/functions.php:656
+msgid "Permission denied to create file "
+msgstr ""
+
+#: includes/lists/class-templateberg-themes-template-kits.php:108
+#: includes/lists/class-templateberg-themes-template-kits.php:120
+msgid "%s Theme Template Kits"
+msgstr ""
+
+#: includes/lists/class-templateberg-themes-template-kits.php:134
+msgid "Available Template Kits"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:21
+msgid "You need to click on the Refresh button below or The current theme does not have Templates on Templateberg."
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:30
+#: src/import/advanced-import/import-modal.js:1264
+#: src/import/advanced-import/my-purchase-data.js:578
+#: src/import/advanced-import/my-purchase-data.js:727
+msgid "Refresh"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:31
+msgid "View Available Themes Template Kits"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:60
+msgid "Processing... Please do not refresh this page or do not go to other url!"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:70
+#: includes/lists/templates/gutenberg.php:30
+#: includes/lists/templates/theme.php:32
+#: src/import/advanced-import/import-modal.js:1299
+msgid "Categories"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:73
+#: includes/lists/templates/current-theme.php:188
+#: includes/lists/templates/gutenberg.php:33
+#: includes/lists/templates/theme.php:35
+#: includes/lists/templates/theme.php:146
+#: src/import/advanced-import/import-modal.js:703
+#: src/import/advanced-import/import-modal.js:739
+#: src/import/advanced-import/import-modal.js:776
+#: src/import/advanced-import/import-modal.js:813
+msgid "All"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:74
+#: includes/lists/templates/current-theme.php:267
+#: includes/lists/templates/gutenberg.php:34
+#: includes/lists/templates/gutenberg.php:189
+#: includes/lists/templates/theme.php:36
+#: includes/lists/templates/theme.php:225
+#: src/import/advanced-import/import-modal.js:704
+msgid "Free"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:75
+#: includes/lists/templates/gutenberg.php:35
+#: includes/lists/templates/theme.php:37
+#: src/import/advanced-import/import-modal.js:705
+#: src/import/advanced-import/import-modal.js:1464
+#: src/import/advanced-import/my-purchase-data.js:640
+msgid "Pro"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:91
+#: includes/lists/templates/current-theme.php:123
+#: includes/lists/templates/current-theme.php:155
+#: includes/lists/templates/current-theme.php:364
+#: includes/lists/templates/gutenberg.php:58
+#: includes/lists/templates/gutenberg.php:78
+#: includes/lists/templates/gutenberg.php:98
+#: includes/lists/templates/gutenberg.php:252
+#: includes/lists/templates/theme.php:53
+#: includes/lists/templates/theme.php:85
+#: includes/lists/templates/theme.php:117
+#: includes/lists/templates/theme.php:311
+msgid "All Items"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:184
+msgid "Purchased"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:196
+#: includes/lists/templates/theme.php:154
+msgid "Normal"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:204
+#: includes/lists/templates/theme.php:162
+msgid "Gutenberg"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:212
+#: includes/lists/templates/theme.php:170
+msgid "Full Site Editing"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:220
+#: includes/lists/templates/theme.php:178
+msgid "Elementor"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:228
+msgid "Sort by"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:230
+#: includes/lists/templates/gutenberg.php:159
+#: includes/lists/templates/theme.php:188
+msgid "Newest Items"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:231
+#: includes/lists/templates/gutenberg.php:160
+#: includes/lists/templates/theme.php:189
+msgid "Popular Items"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:252
+#: includes/lists/templates/gutenberg.php:178
+#: includes/lists/templates/theme.php:213
+msgid "By : "
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:290
+#: includes/lists/templates/current-theme.php:362
+#: includes/lists/templates/gutenberg-buy-preview.php:78
+#: includes/lists/templates/gutenberg.php:207
+#: includes/lists/templates/gutenberg.php:249
+#: includes/lists/templates/theme-buy-preview.php:80
+#: includes/lists/templates/theme.php:257
+#: src/import/advanced-import/import-modal.js:1531
+#: src/import/advanced-import/my-purchase-data.js:691
+#: src/import/advanced-import/render-preview.js:103
+msgid "Preview"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:305
+#: includes/lists/templates/current-theme.php:360
+#: includes/lists/templates/theme.php:308
+msgid "Import"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:322
+#: includes/lists/templates/current-theme.php:361
+#: includes/lists/templates/gutenberg.php:210
+#: includes/lists/templates/gutenberg.php:250
+#: includes/lists/templates/theme.php:269
+#: includes/lists/templates/theme.php:309
+msgid "Purchase"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:363
+#: includes/lists/templates/gutenberg.php:251
+msgid "No item on selected categories!"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:365
+#: includes/lists/templates/gutenberg.php:253
+#: includes/lists/templates/theme.php:312
+msgid "By"
+msgstr ""
+
+#: includes/lists/templates/current-theme.php:366
+#: includes/lists/templates/gutenberg.php:138
+#: includes/lists/templates/gutenberg.php:254
+#: includes/lists/templates/theme.php:313
+#: src/import/advanced-import/import-modal.js:1225
+#: src/import/advanced-import/import-modal.js:1423
+#: src/import/advanced-import/import-modal.js:1487
+#: src/import/advanced-import/my-purchase-data.js:561
+#: src/import/advanced-import/my-purchase-data.js:619
+#: src/import/advanced-import/my-purchase-data.js:663
+msgid "Templates"
+msgstr ""
+
+#: includes/lists/templates/getting-started.php:16
+#: src/import/advanced-import/import-modal.js:1145
+msgid "Get access to hundreds of free templates by creating free account."
+msgstr ""
+
+#: includes/lists/templates/getting-started.php:21
+#: src/import/advanced-import/import-modal.js:1149
+msgid "Clicking the button below will install and activate the Gutentor Plugin since most of the templates are built with it."
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:37
+#: includes/lists/templates/theme-buy-preview.php:39
+msgid "Click"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:43
+#: includes/lists/templates/theme-buy-preview.php:45
+msgid "By :"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:43
+#: includes/lists/templates/theme-buy-preview.php:45
+msgid "Gutentor"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:52
+#: includes/lists/templates/theme-buy-preview.php:54
+msgid "Hide Controls"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:57
+#: includes/lists/templates/theme-buy-preview.php:59
+msgid "Enter desktop preview mode"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:60
+#: includes/lists/templates/theme-buy-preview.php:62
+msgid "Enter tablet preview mode"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:63
+#: includes/lists/templates/theme-buy-preview.php:65
+msgid "Enter mobile preview mode"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:86
+msgid "Free Design Templates"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:96
+msgid "1. Getting Started ( Free License )"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:97
+msgid "Once you install the plugin. Go to %1$sDashboard =&gt; Templateberg.%2$s"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:98
+msgid "Click on %1$sGet Started with Templateberg.%2$s"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:99
+msgid "A new window will open follow the step to automatically setup license key on your site."
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:110
+msgid "2. Import"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:112
+msgid " Edit any Gutenberg Enabled Page or Post. %1$sYou will see %2$sTemplateberg%3$s button at the top left of the editor."
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:114
+msgid "Click on it, you are ready to inset any available template kits, templates and blocks"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:120
+msgid "3. Customizing"
+msgstr ""
+
+#: includes/lists/templates/gutenberg-buy-preview.php:122
+msgid "After importing design, you can customize content and design to meet your site requirements."
+msgstr ""
+
+#: includes/lists/templates/gutenberg.php:149
+#: src/import/advanced-import/import-modal.js:1235
+#: src/import/advanced-import/my-purchase-data.js:573
+msgid "Blocks"
+msgstr ""
+
+#: includes/lists/templates/gutenberg.php:157
+msgid "Sort by:"
+msgstr ""
+
+#: includes/lists/templates/gutenberg.php:212
+#: includes/lists/templates/theme.php:271
+#: includes/lists/templates/theme.php:310
+msgid "Get It Free"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:89
+msgid "First Install Theme and After Import Demo"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:98
+msgid "1. First Install and Activate %1$s %2$s Theme"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:101
+msgid "Another theme is activated currently, to install this template kit first you need to install  %1$s %2$s Theme"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:104
+msgid "Please install and activate the Theme."
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:117
+msgid "2. Come back to %1$s Templateberg Themes Template Kits %2$s"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:120
+msgid "After installing and activating the required theme, come back to Templateberg Themes Template Kits."
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:123
+msgid "And Install the template kit."
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:139
+#: src/import/advanced-import/notice.js:69
+msgid "Sure"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:143
+#: src/import/advanced-import/notice.js:76
+msgid "Maybe Later"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:149
+#: src/import/advanced-import/notice.js:86
+msgid "Purchases"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:153
+#: src/import/advanced-import/notice.js:94
+msgid "Contact Support"
+msgstr ""
+
+#: includes/lists/templates/theme-buy-preview.php:157
+#: src/import/advanced-import/import-modal.js:987
+#: src/import/advanced-import/import-modal.js:1131
+#: src/import/advanced-import/import-modal.js:1276
+#: src/import/advanced-import/import-modal.js:1563
+#: src/import/advanced-import/notice.js:122
+msgid "Close settings"
+msgstr ""
+
+#: includes/lists/templates/theme.php:29
+#: src/import/advanced-import/import-modal.js:1292
+msgid "Search"
+msgstr ""
+
+#: includes/lists/templates/theme.php:186
+msgid "Sort by :"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:656
+#: src/import/advanced-import/my-purchase-data.js:361
+msgid "Following Plugins Missing:"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:901
+msgid "View Templates and Import"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:916
+#: src/import/advanced-import/import-modal.js:944
+msgid "Buy Now"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:933
+#: src/import/advanced-import/my-purchase-data.js:474
+msgid "Insert"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:984
+#: src/import/advanced-import/import-modal.js:1128
+#: src/import/advanced-import/import-modal.js:1273
+#: src/import/advanced-import/import-modal.js:1560
+#: src/import/advanced-import/notice.js:119
+msgid "Close"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1116
+msgid "Favourite"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1171
+msgid "You seem to be missing some blocks that are required by your selected template."
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1173
+msgid "View Missing Blocks"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1204
+msgid "My Purchase"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1245
+msgid "File"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1256
+msgid "Favourites"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1267
+#: src/import/advanced-import/my-purchase-data.js:581
+#: src/import/advanced-import/my-purchase-data.js:730
+msgid "Refresh Templates"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1382
+msgid "You need to refresh your editor before importing templates."
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1390
+#: src/import/advanced-import/my-purchase-data.js:600
+msgid "There seems to be an error. Please try again."
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1391
+#: src/import/advanced-import/my-purchase-data.js:601
+msgid "Some error occurs while fetching library. Please read this documentation "
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1393
+#: src/import/advanced-import/my-purchase-data.js:603
+msgid "Templateberg Issues and Troubleshooting"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1410
+msgid "Back to Favourites"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1410
+#: src/import/advanced-import/my-purchase-data.js:617
+msgid "Back to Template Kits"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1419
+msgid "Buy Template Kit"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1450
+#: src/import/advanced-import/my-purchase-data.js:626
+msgid "Untitled"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1480
+#: src/import/advanced-import/my-purchase-data.js:656
+msgid " By "
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1497
+#: src/import/advanced-import/my-purchase-data.js:673
+msgid "View Related Templates"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1512
+#: src/import/advanced-import/my-purchase-data.js:461
+msgid "View Templates"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1531
+msgid "Edit"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1571
+#: src/import/advanced-import/my-purchase-data.js:707
+msgid "Refreshing"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1571
+#: src/import/advanced-import/my-purchase-data.js:707
+msgid "Importing"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1583
+msgid "Import Blocks from JSON"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1595
+msgid "Choose File"
+msgstr ""
+
+#: src/import/advanced-import/import-modal.js:1601
+msgid "Upload"
+msgstr ""
+
+#: src/import/advanced-import/index.js:53
+msgid "Advanced Import - Import Blocks and Templates Library"
+msgstr ""
+
+#: src/import/advanced-import/index.js:57
+msgid "Advanced Import Template Block Widget Section Patterns Reusable Library Tools"
+msgstr ""
+
+#: src/import/advanced-import/index.js:101
+msgid "Open Templateberg Library"
+msgstr ""
+
+#: src/import/advanced-import/info.js:24
+#: src/import/advanced-import/info.js:27
+msgid "Info"
+msgstr ""
+
+#: src/import/advanced-import/info.js:36
+msgid "You have %d Template Kits remaining from Gutentor Pro."
+msgstr ""
+
+#: src/import/advanced-import/my-purchase-data.js:485
+msgid "You did not purchase any template from templateburg. Please go through the given link to purchase templates from templateburg."
+msgstr ""
+
+#: src/import/advanced-import/my-purchase-data.js:491
+msgid "Purchase Templates"
+msgstr ""
+
+#: src/import/advanced-import/my-purchase-data.js:737
+msgid "No payment information found."
+msgstr ""
+
+#: src/import/advanced-import/notice.js:107
+msgid "Install Plugins"
+msgstr ""
+
+#: src/import/advanced-import/notice.js:114
+msgid "Ignore Plugins"
+msgstr ""
+
+#: src/import/block-export/index.js:104
+msgid "Export Block"
+msgstr ""
+
+#: src/import/settings/components/index.js:46
+msgid "Export the whole editor template on JSON format"
+msgstr ""
+
+#: src/import/settings/components/index.js:58
+msgid "Export Template"
+msgstr ""

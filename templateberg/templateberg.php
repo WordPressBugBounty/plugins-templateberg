@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @wordpress-plugin
  * Plugin Name:       Templateberg - Gutenberg Templates, WordPress Themes Template Kits & WordPress Templates
  * Description:       Easily Import pre-designed templates with starter content on your website and instantly build an elegant website with WordPress. Templateberg content Gutenberg Templates, Patterns and WordPress Theme Template Kits.
- * Version:           1.1.8
+ * Version:           1.1.9
  * Author:            templateberg
  * Author URI:        https://www.templateberg.com/
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 
 /*Define Constants for this plugin*/
-const TEMPLATEBERG_VERSION     = '1.1.8';
+const TEMPLATEBERG_VERSION     = '1.1.9';
 const TEMPLATEBERG_PLUGIN_NAME = 'templateberg';
 define( 'TEMPLATEBERG_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TEMPLATEBERG_URL', plugin_dir_url( __FILE__ ) );
