@@ -4,9 +4,9 @@ Contributors: templateberg, gutentor, acmeit, codersantosh
 Donate link: https://www.templateberg.com/
 Tags: Pre-designed templates, Template Library, Gutenberg Templates, WordPress Templates, WordPress Themes Template Kits
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.6.20
-Stable tag: 1.1.9
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,10 @@ Gutenberg Template Kit will work on any Theme but Theme Template Kit will work o
 
 
 == Changelog ==
+
+= 1.2.0 - 2025-04-17 =
+* Added: WordPress latest compatibility
+* Fixed: Resolved issue with translation function preload
 
 = 1.1.9 - 2024-10-31 =
 * Added: WordPress latest compatibility

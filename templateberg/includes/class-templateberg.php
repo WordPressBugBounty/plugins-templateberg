@@ -104,7 +104,7 @@ class Templateberg {
 	public function run() {
 		$this->version          = TEMPLATEBERG_VERSION;
 		$this->plugin_name      = TEMPLATEBERG_PLUGIN_NAME;
-		$this->plugin_full_name = esc_html__( 'Templateberg', 'templateberg' );
+		$this->plugin_full_name = 'Templateberg';
 
 		$this->load_dependencies();
 		$this->set_locale();
