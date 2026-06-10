@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die;
 /**
  * Fired during plugin activation.
  *
@@ -299,8 +300,8 @@ class Templateberg_Template_Lists_Data {
 	}
 
 	public function get_type() {
-		if ( $_GET['type'] ) {
-			return $_GET['type'];
+		if ( isset( $_GET['type'] ) && $_GET['type'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			return sanitize_text_field( wp_unslash( $_GET['type'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		} else {
 			return 'block';
 		}

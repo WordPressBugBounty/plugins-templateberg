@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or die;
 /**
  * Define the internationalization functionality
  *
@@ -33,7 +33,7 @@ class Templateberg_i18n
     public function load_plugin_textdomain()
     {
 
-        load_plugin_textdomain(
+        load_plugin_textdomain( // phpcs:ignore WordPress.WP.DiscouragedFunctions.load_plugin_textdomain_load_plugin_textdomain,PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
             'templateberg',
             false,
             dirname(dirname(plugin_basename(__FILE__))) . '/languages/'

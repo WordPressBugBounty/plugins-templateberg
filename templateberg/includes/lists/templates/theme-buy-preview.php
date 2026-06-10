@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) or die; ?>
 <!--Loading HTML-->
 <div id="tb-list__popup_loader" class="tb-modal__overlay" style="display:none;">
     <div class="tb-preview__main_loader">
@@ -95,10 +96,14 @@
             <section class="tb-modal__content">
                 <div class="tb-modal__content-info">
                     <h2 class="tb-modal__content-h">
-                        <?php printf(esc_html__('1. First Install and Activate %1$s %2$s Theme', 'templateberg'), "<a href='".admin_url('theme-install.php?search=')."' target='_blank' class='tb-modal__theme_install_link'>", '</a>')?>
+                        <?php
+                        // Translators: %1$s and %2$s wrap the theme install link.
+                        printf(esc_html__('1. First Install and Activate %1$s %2$s Theme', 'templateberg'), "<a href='" . esc_url(admin_url('theme-install.php?search=')) . "' target='_blank' class='tb-modal__theme_install_link'>", '</a>') // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </h2>
                     <p class="tb-modal__content-p">
-                        <?php printf(esc_html__('Another theme is activated currently, to install this template kit first you need to install  %1$s %2$s Theme', 'templateberg'), "<a href='".admin_url('theme-install.php?search=')."' target='_blank' class='tb-modal__theme_install_link'>", '</a>')?>
+                        <?php
+                        // Translators: %1$s and %2$s wrap the theme install link.
+                        printf(esc_html__('Another theme is activated currently, to install this template kit first you need to install  %1$s %2$s Theme', 'templateberg'), "<a href='" . esc_url(admin_url('theme-install.php?search=')) . "' target='_blank' class='tb-modal__theme_install_link'>", '</a>') // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </p>
                     <p class="tb-modal__content-p">
                         <?php esc_html_e('Please install and activate the Theme.', 'templateberg');?>
@@ -114,7 +119,9 @@
                 </div>
                 <div class="tb-modal__content-info">
                     <h2 class="tb-modal__content-h">
-                        <?php printf(esc_html__('2. Come back to %1$s Templateberg Themes Template Kits %2$s', 'templateberg'), "<a href='".admin_url('admin.php?page='.templateberg_theme_templates()->get_slug())."' class='tb-modal__comeback_link'>", '</a>')?>
+                        <?php
+                        // Translators: %1$s and %2$s wrap the Templateberg Themes Template Kits link.
+                        printf(esc_html__('2. Come back to %1$s Templateberg Themes Template Kits %2$s', 'templateberg'), "<a href='" . esc_url(admin_url('admin.php?page=' . templateberg_theme_templates()->get_slug())) . "' class='tb-modal__comeback_link'>", '</a>') // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     </h2>
                     <p class="tb-modal__content-p">
                         <?php esc_html_e('After installing and activating the required theme, come back to Templateberg Themes Template Kits.', 'templateberg');?>

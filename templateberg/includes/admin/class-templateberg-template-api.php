@@ -213,6 +213,24 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 					),
 				)
 			);
+
+			/*
+			Connect namespace - Archive Page (proxies templateberg.com)
+			Used by current.js and theme.js pagination
+			*/
+			register_rest_route(
+				'connect/v1',
+				'/get_archive_page',
+				array(
+					array(
+						'methods'             => \WP_REST_Server::READABLE,
+						'callback'            => array( $this, 'get_archive_page' ),
+						'permission_callback' => function () {
+							return current_user_can( 'manage_options' );
+						},
+					),
+				)
+			);
 		}
 
 		/**
@@ -249,7 +267,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 			/*Delete Block Json Transient*/
 			global $wpdb;
-			$transients = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_gutentor_get_block_json_%'" );
+			$transients = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '_transient_gutentor_get_block_json_%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			if ( $transients ) {
 				foreach ( $transients as $transient ) {
@@ -260,7 +278,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 			/*Delete Block Json Transient*/
 			global $wpdb;
-			$transients = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_templateberg_tj_%'" );
+			$transients = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '_transient_templateberg_tj_%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			if ( $transients ) {
 				foreach ( $transients as $transient ) {
@@ -283,9 +301,10 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 			if ( ! templateberg_connect()->has_account() ) {
 				return rest_ensure_response( false );
 			}
-			$paged          = $request->get_param( 'paged' ) ? $request->get_param( 'paged' ) : 1;
-			$templates_list = templateberg_get_editor_templates( $paged );
-			$max_pages      = get_transient( 'templateberg_edt_max' );
+			$paged            = $request->get_param( 'paged' ) ? $request->get_param( 'paged' ) : 1;
+			$templates_list   = templateberg_get_editor_templates( $paged );
+			$max_pages        = get_transient( 'templateberg_edt_max' );
+			$total_templates  = 0;
 
 			if ( $request->get_param( 'reset' ) ) {
 				$this->delete_transient();
@@ -320,7 +339,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 							$purchase_ids   = templateberg_connect()->get_purchase_templates_id();
 							if ( is_array( $purchase_ids ) ) {
 								foreach ( $templates_list_old as $templates ) {
-									if ( in_array( $templates['id'], $purchase_ids ) ) {
+									if ( in_array( $templates['id'], $purchase_ids, true ) ) {
 										$new_array                 = $templates;
 										$new_array['is_purchased'] = 'purchased';
 										array_push( $templates_list, $new_array );
@@ -338,8 +357,8 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 					} else {
 						return new WP_Error(
 							'rest_templateberg_json_error',
-							__( 'Something went wrong. Please contact to templateberg.com' ),
-							array( 'status' => 200 )
+							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+							array( 'status' => 500 )
 						);
 					}
 				} else {
@@ -347,7 +366,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 				}
 
 				/*Gutentor compatible*/
-				$templates_list = apply_filters( 'gutentor_get_template_library', $templates_list );
+				$templates_list = apply_filters( 'gutentor_get_template_library', $templates_list ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 				/*New hook*/
 				$templates_list = apply_filters( 'templateberg_get_templates', $templates_list );
@@ -376,7 +395,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 						is_array( $single_list['templates'] ) &&
 						! empty( $single_list['templates'] ) ) {
 						foreach ( $single_list['templates'] as $single_template ) {
-							if ( ! in_array( $single_template['id'], $purchases_ids ) ) {
+							if ( ! in_array( $single_template['id'], $purchases_ids, true ) ) {
 								array_push( $purchased_templates, $single_template );
 							}
 							/*add it last otherwise previous if doensot work*/
@@ -387,7 +406,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 				if ( $purchases_ids ) {
 					foreach ( $templates_list as $single_key => $single_list ) {
-						if ( isset( $single_list ) && isset( $single_list['id'] ) && in_array( $single_list['id'], $purchases_ids ) ) {
+						if ( isset( $single_list ) && isset( $single_list['id'] ) && in_array( $single_list['id'], $purchases_ids, true ) ) {
 							unset( $templates_list[ $single_key ] );
 						}
 					}
@@ -482,8 +501,8 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 						} else {
 							return new WP_Error(
 								'rest_templateberg_json_error',
-								__( 'Something went wrong. Please contact to templateberg.com' ),
-								array( 'status' => 200 )
+								__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+								array( 'status' => 500 )
 							);
 						}
 					} else {
@@ -546,7 +565,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 						return new WP_Error(
 							'rest_templateberg_json_error',
 							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
-							array( 'status' => 200 )
+							array( 'status' => 500 )
 						);
 					}
 				} else {
@@ -590,7 +609,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 				);
 
 				if ( ! is_wp_error( $raw_json ) ) {
-					$block_json = json_decode( wp_remote_retrieve_body( $raw_json ) );
+					$block_json = json_decode( wp_remote_retrieve_body( $raw_json ), true );
 					/*Store on transient*/
 					set_transient( 'templateberg_tj_' . $block_id, $block_json, DAY_IN_SECONDS );
 				} else {
@@ -659,7 +678,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 		 * @return bool|WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 		 */
 		public function gutenberg_templates( \WP_REST_Request $request ) {
-			$paged = $request->get_param( 'paged' );
+			$paged = (int) $request->get_param( 'page' );
 			if ( $request->get_param( 'reset' ) ) {
 				templateberg_delete_transients_by_prefix( 'templateberg_gutenberg_templates' );
 			}
@@ -670,7 +689,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 			/*Get Json*/
 			if ( empty( $templates_list ) ) {
-				$url       = templateberg_connect()->get_gutenberg_tempaltes_url( $paged );
+				$url       = templateberg_connect()->get_gutenberg_templates_url( $paged );
 				$body_args = array(
 					/*API version*/
 					'api_version' => TEMPLATEBERG_VERSION,
@@ -707,12 +726,56 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 					templateberg_set_gutenberg_templates( $templates_list, $paged );
 				}
 			}
+			$paged = $paged ? $paged : 1;
+
+			// Build header (tab links)
+			templateberg_template_lists_data()->run( $templates_list );
+			$templateberg_data = templateberg_template_lists_data()->data;
+
+			$templateberg_current_tab = 'template-kits';
+			if ( isset( $templateberg_data['templates'] ) ) {
+				$templateberg_current_tab = 'templates';
+			}
+			if ( isset( $templateberg_data['blocks'] ) ) {
+				$templateberg_current_tab = 'blocks';
+			}
+
+			ob_start();
+			?>
+			<div class="tb-list__links">
+				<?php if ( isset( $templateberg_data['template-kits'] ) ) : ?>
+					<a href="#" class="tb-list__cat_btn <?php echo esc_attr( $templateberg_current_tab === 'template-kits' ? 'is-selected' : '' ); ?>" data-type="template-kits">
+						<i class="fas fa-images"></i>
+						<?php esc_html_e( 'Template Kits', 'templateberg' ); ?>
+					</a>
+				<?php endif; ?>
+				<?php if ( isset( $templateberg_data['templates'] ) ) : ?>
+					<a href="#" class="tb-list__cat_btn <?php echo esc_attr( $templateberg_current_tab === 'templates' ? 'is-selected' : '' ); ?>" data-type="templates">
+						<i class="far fa-file"></i>
+						<?php esc_html_e( 'Templates', 'templateberg' ); ?>
+					</a>
+				<?php endif; ?>
+				<?php if ( isset( $templateberg_data['blocks'] ) ) : ?>
+					<a href="#" class="tb-list__cat_btn <?php echo esc_attr( $templateberg_current_tab === 'blocks' ? 'is-selected' : '' ); ?>" data-type="blocks">
+						<i class="fas fa-th-large"></i>
+						<?php esc_html_e( 'Blocks', 'templateberg' ); ?>
+					</a>
+				<?php endif; ?>
+			</div>
+			<?php
+			$header = ob_get_clean();
+
+			$base_url = admin_url( 'admin.php?page=templateberg-gutenberg-templates' );
+			$pagination = templateberg_pagination( $paged, $max_pages, $base_url );
+
 			return rest_ensure_response(
 				array(
 					'templates'       => $templates_list,
 					'found_posts'     => $total_templates,
 					'max_pages'       => $max_pages,
 					'purchased_items' => templateberg_connect()->get_purchase_templates(),
+					'pagination'      => $pagination,
+					'header'          => $header,
 				)
 			);
 		}
@@ -725,7 +788,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 		 * @return bool|WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 		 */
 		public function theme_templates( \WP_REST_Request $request ) {
-			$paged = $request->get_param( 'paged' );
+			$paged = (int) $request->get_param( 'page' );
 			if ( $request->get_param( 'reset' ) ) {
 				templateberg_delete_transients_by_prefix( 'templateberg_theme_templates' );
 			}
@@ -736,7 +799,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 			/*Get Json*/
 			if ( empty( $templates_list ) ) {
-				$url       = templateberg_connect()->get_theme_tempaltes_url( $paged );
+				$url       = templateberg_connect()->get_theme_templates_url( $paged );
 				$body_args = array(
 					/*API version*/
 					'api_version' => TEMPLATEBERG_VERSION,
@@ -806,13 +869,13 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 			$max_pages       = get_transient( 'templateberg_ct_' . $theme . '_max' );
 			$total_templates = get_transient( 'templateberg_ct_' . $theme . '_total' );
-			if ( $total_templates ) {
+			if ( ! $total_templates ) {
 				$total_templates = 0;
 			}
 
 			/*Get Json*/
 			if ( empty( $templates_list ) || 'nothing' === $templates_list ) {
-				$url       = templateberg_connect()->get_current_theme_tempaltes_url( $paged, $request->get_param( 'theme' ) );
+				$url       = templateberg_connect()->get_current_theme_templates_url( $paged, $request->get_param( 'theme' ) );
 				$body_args = array(
 					/*API version*/
 					'api_version' => TEMPLATEBERG_VERSION,
@@ -904,7 +967,7 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 						return new WP_Error(
 							'rest_templateberg_json_error',
 							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
-							array( 'status' => 200 )
+							array( 'status' => 500 )
 						);
 					}
 				} else {
@@ -955,31 +1018,60 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 					}
 					$plugins = isset( $tb_data['plugins'] ) && is_array( $tb_data['plugins'] ) ? ' data-plugins="' . esc_attr( wp_json_encode( $tb_data['plugins'] ) ) . '"' : '';
 
-					$html = '<div class="ai-item" data-template_url="' . esc_url( $tb_data['theme_template_url'] ) . '" data-template_type="url" style="display:none;visibility:hidden">
-		                ' . wp_nonce_field( 'advanced-import', '_wpnonce', true, false ) . '
-		                <div class="ai-item-footer">
-			                <div class="ai-item-footer_meta">
-				                <div class="ai-item-footer-actions">
-					                <a class="ai-demo-import ai-item-import"
-					                   href="#" aria-label="Import"
-					                   ' . $plugins . '
-					                >
-					                </a>
-				                </div>
-			                </div>
-		                </div>
-	                </div>';
+					$html = '<div class="ai-item" data-template_url="' . esc_url( $tb_data['theme_template_url'] ) . '" data-template_type="url" style="display:none;visibility:hidden">' . wp_nonce_field( 'advanced-import', '_wpnonce', true, false ) . '<div class="ai-item-footer"><div class="ai-item-footer_meta"><div class="ai-item-footer-actions"><a class="ai-demo-import ai-item-import" href="#" aria-label="Import"' . $plugins . '></a></div></div></div></div>';
 					return rest_ensure_response( $html );
 				} else {
 					return new WP_Error(
 						'rest_templateberg_json_error',
-						__( 'Something went wrong. Please contact to templateberg.com' ),
-						array( 'status' => 200 )
+						__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+						array( 'status' => 500 )
 					);
 				}
 			} else {
 				return rest_ensure_response( $raw_json );
 			}
+		}
+
+		/**
+		 * Proxy to templateberg.com connect/v1/get_archive_page
+		 *
+		 * @since 2.0.0
+		 * @param WP_REST_Request $request
+		 * @return WP_REST_Response|WP_Error
+		 */
+		public function get_archive_page( \WP_REST_Request $request ) {
+			$page = $request->get_param( 'page' );
+			$sort = $request->get_param( 'sort' );
+
+			$url = add_query_arg(
+				array(
+					'page' => $page,
+					'sort' => $sort,
+				),
+				'https://templateberg.com/wp-json/connect/v1/get_archive_page'
+			);
+
+			$raw_json = wp_safe_remote_get( $url, array( 'timeout' => 30 ) );
+
+			if ( is_wp_error( $raw_json ) ) {
+				return new WP_Error(
+					'rest_templateberg_archive_error',
+					__( 'Failed to fetch archive page.', 'templateberg' ),
+					array( 'status' => 500 )
+				);
+			}
+
+			$data = json_decode( wp_remote_retrieve_body( $raw_json ), true );
+
+			if ( ! is_array( $data ) ) {
+				return new WP_Error(
+					'rest_templateberg_archive_invalid',
+					__( 'Invalid response from archive.', 'templateberg' ),
+					array( 'status' => 500 )
+				);
+			}
+
+			return rest_ensure_response( $data );
 		}
 
 		/**
@@ -992,15 +1084,12 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 		 * @return object
 		 */
 		public static function get_instance() {
-			// Store the instance locally to avoid private static replication
 			static $instance = null;
 
-			// Only run these methods if they haven't been ran previously
 			if ( null === $instance ) {
 				$instance = new self();
 			}
 
-			// Always return the instance
 			return $instance;
 		}
 

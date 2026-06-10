@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die;
 /**
  * Templateberg Connect to Gutentor
  *
@@ -149,7 +150,7 @@ if ( ! class_exists( 'Templateberg_Gutentor_Connect' ) ) {
 			update_user_meta(
 				get_current_user_id(),
 				'templateberg-gutentor-imd-tmls',
-				wp_json_encode( array_unique( $gutentor_info ) )
+				wp_json_encode( array_unique( $gutentor_info['template_kits_used'] ) )
 			);
 		}
 
@@ -158,7 +159,7 @@ if ( ! class_exists( 'Templateberg_Gutentor_Connect' ) ) {
 		 *
 		 * @since 1.1.4
 		 */
-		function get_remaining_template_kits() {
+		public function get_remaining_template_kits() {
 			$total_num          = templateberg_gutentor_connect()->get_total_template_kits();
 			$used_template_kits = templateberg_gutentor_connect()->get_imported_template_kits();
 			$used_num           = count( $used_template_kits );

@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) or die; ?>
 <div class="tb-all_content_wrap">
     <div class="tb-getting_started">
 

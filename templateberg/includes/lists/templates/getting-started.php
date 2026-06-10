@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) or die; ?>
 <div class="tb-theme-popup" style="display: none">
     <div class="tb-theme-popup__wrap">
         <div class="tb-theme-popup__close">

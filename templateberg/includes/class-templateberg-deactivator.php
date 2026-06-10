@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die;
 /**
  * Fired during plugin deactivation
  *
@@ -21,9 +22,9 @@ class Templateberg_Deactivator
 {
 
     /**
-     * Short Description. (use period)
+     * Run deactivation tasks.
      *
-     * Long Description.
+     * Cleans up redirect flag.
      *
      * @since    1.0.0
      */

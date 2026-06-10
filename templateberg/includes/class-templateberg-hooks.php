@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or die;
 /**
  * The Templateberg theme hooks callback functionality of the plugin.
  *
@@ -88,7 +88,7 @@ class Templateberg_Hooks {
 		// Scripts.
 		wp_enqueue_script(
 			'templateberg-editor', // Handle.
-			TEMPLATEBERG_URL . 'dist/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
+			TEMPLATEBERG_URL . 'dist/blocks.js', // Block.build.js: We register the block here. Built with Webpack.
 			$dependencies, // Dependencies, defined above.
 			TEMPLATEBERG_VERSION, // Version: File modification time.
 			true // Enqueue the script in the footer.
@@ -102,7 +102,7 @@ class Templateberg_Hooks {
 			array(
 				'nonce'                => wp_create_nonce( 'templateberg_nonce' ),
 				'gutentor'             => array(
-					'active' => templateburg_is_gutentor_active(),
+					'active' => templateberg_is_gutentor_active(),
 				),
 				'user'                 => array(
 					'id' => get_current_user_id(),
@@ -119,7 +119,7 @@ class Templateberg_Hooks {
 		// Styles.
 		wp_enqueue_style(
 			'templateberg-editor', // Handle.
-			TEMPLATEBERG_URL . 'dist/blocks.editor.build.css',
+			TEMPLATEBERG_URL . 'dist/blocks.css',
 			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 			TEMPLATEBERG_VERSION // Version: File modification time.
 		);
@@ -144,7 +144,7 @@ class Templateberg_Hooks {
 		// Scripts.
 		wp_enqueue_script(
 			'templateberg-dashboard', // Handle.
-			TEMPLATEBERG_URL . 'dist/admin.min.js', // Block.build.js: We register the block here. Built with Webpack.
+			TEMPLATEBERG_URL . 'dist/admin.js',
 			array( 'jquery', 'jquery-ui-dialog' ), // Dependencies, defined above.
 			TEMPLATEBERG_VERSION, // Version: File modification time.
 			true // Enqueue the script in the footer.
@@ -157,7 +157,7 @@ class Templateberg_Hooks {
 				'restUrl'        => esc_url_raw( rest_url() ),
 				'account'        => templateberg_connect()->get_account(),
 				'advancedImport' => array(
-					'active' => templateburg_is_advanced_import_active(),
+					'active' => templateberg_is_advanced_import_active(),
 				),
 				'purchase_url'   => templateberg_connect()->get_purchase_url(),
 				'admin_url'      => templateberg_connect()->get_admin_url(),
@@ -182,8 +182,7 @@ class Templateberg_Hooks {
 			array( 'wp-jquery-ui-dialog' ), // Dependencies, defined above.
 			TEMPLATEBERG_VERSION // Version: File modification time.
 		);
-
-		if ( templateburg_is_advanced_import_active() ) {
+		if ( templateberg_is_advanced_import_active() ) {
 			advanced_import_admin()->enqueue_scripts( 'appearance_page_advanced-import' );
 		}
 	}

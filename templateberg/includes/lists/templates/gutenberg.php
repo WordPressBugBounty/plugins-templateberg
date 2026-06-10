@@ -1,9 +1,12 @@
 <?php
-$paged = get_query_var('paged')?get_query_var('paged'):1;
-$templates_list = templateberg_get_gutenberg_templates($paged);
-$templates_list_popular = get_transient('templateberg_gt_p_'.$paged);
-$total_posts = get_transient('templateberg_gt_total');
-$max_pages = get_transient('templateberg_gt_max');
+defined( 'ABSPATH' ) or die;
+?><link rel="stylesheet" id="templateberg-dashboard-shortcode-css" href="<?php echo esc_url( TEMPLATEBERG_URL . 'dist/list.css' ); ?>" type="text/css" media="all"> <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet ?>
+<?php
+$templateberg_paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+$templateberg_templates_list = templateberg_get_gutenberg_templates($templateberg_paged);
+$templateberg_templates_list_popular = get_transient('templateberg_gt_p_'.$templateberg_paged);
+$templateberg_total_posts = get_transient('templateberg_gt_total');
+$templateberg_max_pages = get_transient('templateberg_gt_max');
 
 /**
  * Create Instance for Templateberg_Template_Lists_Data
@@ -15,11 +18,9 @@ $max_pages = get_transient('templateberg_gt_max');
  *
  * @return object
  */
-templateberg_template_lists_data()->run($templates_list);
-$data = templateberg_template_lists_data()->data;
+templateberg_template_lists_data()->run($templateberg_templates_list);
+$templateberg_data = templateberg_template_lists_data()->data;
 ?>
-
-<link rel="stylesheet" id="templateberg-dashboard-shortcode-css" href="<?php echo TEMPLATEBERG_URL . 'dist/list.css' ?>" type="text/css" media="all">
 
 <div class="tb-list__template" role="document">
     <div class="tb-list__sidebar">
@@ -37,30 +38,30 @@ $data = templateberg_template_lists_data()->data;
             </div>
             <ul class="tb-list__cat_lists tb-cat-lists-all tb-cats-content-active">
                 <?php
-                $current_tab = '';
-                $current_tab_cats = array();
-                $count_items = templateberg_template_lists_data()->countItems;
-                if (isset($data['template-kits'])) {
-                    $current_tab ='template-kits';
-                    $current_tab_cats =$count_items['template-kits'];
-                } elseif (isset($data['templates'])) {
-                    $current_tab ='templates';
-                    $current_tab_cats =$count_items['templates'];
-                } elseif (isset($data['blocks'])) {
-                    $current_tab ='blocks';
-                    $current_tab_cats =$count_items['blocks'];
+                $templateberg_current_tab = '';
+                $templateberg_current_tab_cats = array();
+                $templateberg_count_items = templateberg_template_lists_data()->countItems;
+                if (isset($templateberg_data['template-kits'])) {
+                    $templateberg_current_tab ='template-kits';
+                    $templateberg_current_tab_cats =$templateberg_count_items['template-kits'];
+                } elseif (isset($templateberg_data['templates'])) {
+                    $templateberg_current_tab ='templates';
+                    $templateberg_current_tab_cats =$templateberg_count_items['templates'];
+                } elseif (isset($templateberg_data['blocks'])) {
+                    $templateberg_current_tab ='blocks';
+                    $templateberg_current_tab_cats =$templateberg_count_items['blocks'];
                 }
-                if (!empty($current_tab_cats)) {
-                    foreach ($current_tab_cats as $cat => $count) {
-                        if ($cat === 'all') {
+                if (!empty($templateberg_current_tab_cats)) {
+                    foreach ($templateberg_current_tab_cats as $templateberg_cat => $templateberg_count) {
+                        if ($templateberg_cat === 'all') {
                             ?>
                             <li class="tb-list__current_item">
-                                <a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo $count;?></span></a>
+                                <a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo intval($templateberg_count);?></span></a>
                             </li>
                             <?php
                         } else {
                             ?>
-                            <li class=""><a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $cat)));?><span><?php echo $count;?></span></a></li>
+                            <li class=""><a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $templateberg_cat)));?><span><?php echo intval($templateberg_count);?></span></a></li>
                             <?php
                         }
                     }
@@ -69,18 +70,18 @@ $data = templateberg_template_lists_data()->data;
             </ul>
             <ul class="tb-list__cat_lists tb-cat-lists-free">
                 <?php
-                $count_items = templateberg_template_lists_data()->countFreeItems;
-                if (!empty($current_tab_cats)) {
-                    foreach ($current_tab_cats as $cat => $count) {
-                        if ($cat === 'all-free') {
+                $templateberg_count_items = templateberg_template_lists_data()->countFreeItems;
+                if (!empty($templateberg_current_tab_cats)) {
+                    foreach ($templateberg_current_tab_cats as $templateberg_cat => $templateberg_count) {
+                        if ($templateberg_cat === 'all-free') {
                             ?>
                             <li class="tb-list__current_item">
-                                <a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo $count;?></span></a>
+                                <a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo intval($templateberg_count);?></span></a>
                             </li>
                             <?php
                         } else {
                             ?>
-                            <li class=""><a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $cat)));?><span><?php echo $count;?></span></a></li>
+                            <li class=""><a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $templateberg_cat)));?><span><?php echo intval($templateberg_count);?></span></a></li>
                             <?php
                         }
                     }
@@ -89,18 +90,18 @@ $data = templateberg_template_lists_data()->data;
             </ul>
             <ul class="tb-list__cat_lists tb-cat-lists-pro">
                 <?php
-                $count_items = templateberg_template_lists_data()->countProItems;
-                if (!empty($current_tab_cats)) {
-                    foreach ($current_tab_cats as $cat => $count) {
-                        if ($cat === 'all-pro') {
+                $templateberg_count_items = templateberg_template_lists_data()->countProItems;
+                if (!empty($templateberg_current_tab_cats)) {
+                    foreach ($templateberg_current_tab_cats as $templateberg_cat => $templateberg_count) {
+                        if ($templateberg_cat === 'all-pro') {
                             ?>
                             <li class="tb-list__current_item">
-                                <a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo $count;?></span></a>
+                                <a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html__('All Items', 'templateberg'); ?><span><?php echo intval($templateberg_count);?></span></a>
                             </li>
                             <?php
                         } else {
                             ?>
-                            <li class=""><a href="#" data-cat="<?php echo esc_attr($cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $cat)));?><span><?php echo $count;?></span></a></li>
+                            <li class=""><a href="#" data-cat="<?php echo esc_attr($templateberg_cat);?>"><?php echo esc_html(ucwords(str_replace("-", " ", $templateberg_cat)));?><span><?php echo intval($templateberg_count);?></span></a></li>
                             <?php
                         }
                     }
@@ -116,35 +117,35 @@ $data = templateberg_template_lists_data()->data;
         <div class="tb-list__header">
             <div class="tb-list__links">
                 <?php
-                $current_tab_data = array();
-                if (isset($data['template-kits'])) {
-                    if (empty($current_tab_data)) {
-                        $current_tab_data = $data['template-kits'];
+                $templateberg_current_tab_data = array();
+                if (isset($templateberg_data['template-kits'])) {
+                    if (empty($templateberg_current_tab_data)) {
+                        $templateberg_current_tab_data = $templateberg_data['template-kits'];
                     }
                     ?>
-                    <a href="#" class="tb-list__cat_btn <?php echo $current_tab ==='template-kits'?'is-selected':'';?>" data-type="template-kits">
+                    <a href="#" class="tb-list__cat_btn <?php echo esc_attr($templateberg_current_tab ==='template-kits'?'is-selected':'');?>" data-type="template-kits">
                         <i class="fas fa-images"></i>
                         <?php echo esc_html__('Template Kits', 'templateberg'); ?>
                     </a>
                     <?php
                 }
-                if (isset($data['templates'])) {
-                    if (empty($current_tab_data)) {
-                        $current_tab_data = $data['templates'];
+                if (isset($templateberg_data['templates'])) {
+                    if (empty($templateberg_current_tab_data)) {
+                        $templateberg_current_tab_data = $templateberg_data['templates'];
                     }
                     ?>
-                    <a href="#" class="tb-list__cat_btn <?php echo $current_tab ==='templates'?'is-selected':'';?>" data-type="templates">
+                    <a href="#" class="tb-list__cat_btn <?php echo esc_attr($templateberg_current_tab ==='templates'?'is-selected':'');?>" data-type="templates">
                         <i class="far fa-file"></i>
                         <?php echo esc_html__('Templates', 'templateberg'); ?>
                     </a>
                     <?php
                 }
-                if (isset($data['blocks'])) {
-                    if (empty($current_tab_data)) {
-                        $current_tab_data = $data['blocks'];
+                if (isset($templateberg_data['blocks'])) {
+                    if (empty($templateberg_current_tab_data)) {
+                        $templateberg_current_tab_data = $templateberg_data['blocks'];
                     }
                     ?>
-                    <a href="#" class="tb-list__cat_btn <?php echo $current_tab ==='blocks'?'is-selected':'';?>" data-type="blocks">
+                    <a href="#" class="tb-list__cat_btn <?php echo esc_attr($templateberg_current_tab ==='blocks'?'is-selected':'');?>" data-type="blocks">
                         <i class="fas fa-th-large"></i>
                         <?php echo esc_html__('Blocks', 'templateberg'); ?>
                     </a>
@@ -168,23 +169,23 @@ $data = templateberg_template_lists_data()->data;
         </div>
         <div class="tb-list__content">
             <?php
-            if (!empty($current_tab_data)) {
-                foreach ($current_tab_data as $item) {
+            if (!empty($templateberg_current_tab_data)) {
+                foreach ($templateberg_current_tab_data as $templateberg_item) {
                     ?>
-                    <div aria-label="<?php echo esc_attr($item['title'])?>" class="tb-list__item" data-id="<?php echo esc_attr($item['id'])?>" data-type="<?php echo esc_attr($item['type']);?>">
+                    <div aria-label="<?php echo esc_attr($templateberg_item['title'])?>" class="tb-list__item" data-id="<?php echo esc_attr($templateberg_item['id'])?>" data-type="<?php echo esc_attr($templateberg_item['type']);?>">
                         <div class="tb-list__item_preview">
-                            <img src="<?php echo esc_url($item['screenshot_url']);?>" loading="lazy">
+                            <img src="<?php echo esc_url($templateberg_item['screenshot_url']);?>" loading="lazy">
                             <span class="tb-list__author"><i class="fas fa-user"></i>
-                            <?php echo esc_html__('By : ', 'templateberg').esc_html(ucwords($item['author'])); ?>
+                            <?php echo esc_html__('By : ', 'templateberg').esc_html(ucwords($templateberg_item['author'])); ?>
                         </span>
                         </div>
                         <div class="tb-list__item_footer">
                             <div class="tb-list__item_price">
-                                <?php $tb_download_price = (int) $item['price']; ?>
+                                <?php $templateberg_tb_download_price = (int) $templateberg_item['price']; ?>
                                 <span>
                                 <?php
-                                if ($tb_download_price > 0) :
-                                    echo wp_kses_post($item['price_with_symbol']);
+                                if ($templateberg_tb_download_price > 0) :
+                                    echo wp_kses_post($templateberg_item['price_with_symbol']);
                                 else :
                                     echo esc_html__('Free', 'templateberg');
                                 endif;
@@ -193,20 +194,20 @@ $data = templateberg_template_lists_data()->data;
                             </div>
                             <div class="tb-list__item_meta">
                                 <h4>
-                                    <a class="tb-list__item_title_link" href="<?php echo esc_url($item['permalink'])?>" target="_blank" rel="noopener">
-                                        <?php echo esc_attr($item['title'])?>
+                                    <a class="tb-list__item_title_link" href="<?php echo esc_url($templateberg_item['permalink'])?>" target="_blank" rel="noopener">
+<?php echo esc_html($templateberg_item['title'])?>
                                     </a>
                                 </h4>
                                 <?php
-                                if (isset($item['templates']) && is_array($item['templates']) && count($item['templates'])) {
-                                    echo '<span class="tb-list__item-tk-count">'.count($item['templates']).' Templates</span>';
+                                if (isset($templateberg_item['templates']) && is_array($templateberg_item['templates']) && count($templateberg_item['templates'])) {
+                                    echo '<span class="tb-list__item-tk-count">' . count( $templateberg_item['templates'] ) . ' ' . esc_html__( 'Templates', 'templateberg' ) . '</span>';
                                 }
                                 ?>
                             </div>
                             <div class="tb-list__item_actions">
-                                <a class="tb-item__preview_link" href="<?php echo esc_url($item['demo_url']);?>" target="_blank"><?php echo esc_html__('Preview', 'templateberg'); ?></a>
-                                <a class="tb-list__item_btn tb-list__item_buy_btn" data-id="<?php echo esc_attr($item['id'])?>" data-is_pro="<?php echo esc_attr(( $tb_download_price > 0 ) ? 'pro' : 'free'); ?>" href="<?php echo esc_url($item['permalink'])?>" target="_blank" rel="noopener">
-                                    <?php if ($tb_download_price > 0) :
+                                <a class="tb-item__preview_link" href="<?php echo esc_url($templateberg_item['demo_url']);?>" target="_blank"><?php echo esc_html__('Preview', 'templateberg'); ?></a>
+                                <a class="tb-list__item_btn tb-list__item_buy_btn" data-id="<?php echo esc_attr($templateberg_item['id'])?>" data-is_pro="<?php echo esc_attr(( $templateberg_tb_download_price > 0 ) ? 'pro' : 'free'); ?>" href="<?php echo esc_url($templateberg_item['permalink'])?>" target="_blank" rel="noopener">
+                                    <?php if ($templateberg_tb_download_price > 0) :
                                         echo esc_html__('Purchase', 'templateberg');
                                     else :
                                         echo esc_html__('Get It Free', 'templateberg');
@@ -222,7 +223,7 @@ $data = templateberg_template_lists_data()->data;
             ?>
         </div>
         <?php
-        echo templateberg_pagination($paged, $max_pages);
+        echo templateberg_pagination($templateberg_paged, $templateberg_max_pages); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         ?>
     </div>
 </div>
@@ -231,7 +232,7 @@ require_once TEMPLATEBERG_PATH . 'includes/lists/templates/gutenberg-buy-preview
 // Scripts.
 wp_enqueue_script(
     'templateberg-gutenberg', // Handle.
-    TEMPLATEBERG_URL . 'dist/gutenberg.min.js', // Block.build.js: We register the block here. Built with Webpack.
+    TEMPLATEBERG_URL . 'dist/gutenberg.js',
     array( 'jquery' ), // Dependencies, defined above.
     TEMPLATEBERG_VERSION, // Version: File modification time.
     true // Enqueue the script in the footer.
@@ -242,9 +243,9 @@ wp_localize_script(
     array(
                 'restNonce'          => wp_create_nonce('wp_rest'),
                 'restUrl'            => esc_url_raw(rest_url()),
-                'currentTab'           => $current_tab,
-                'popularList'           => $templates_list_popular,
-                'normalList'           => $templates_list,
+                'currentTab'           => $templateberg_current_tab,
+                'popularList'           => $templateberg_templates_list_popular,
+                'normalList'           => $templateberg_templates_list,
                 'text'          => array(
                         'preview' => esc_html__('Preview', 'templateberg'),
                         'purchase' => esc_html__('Purchase', 'templateberg'),

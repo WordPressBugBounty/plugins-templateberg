@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) or die; ?>
 <div class="tb-global__header">
     <div class="tb-container">
             <div class="tb-global__caption">

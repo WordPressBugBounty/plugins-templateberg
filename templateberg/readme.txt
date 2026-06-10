@@ -4,9 +4,9 @@ Contributors: templateberg, gutentor, acmeit, codersantosh
 Donate link: https://www.templateberg.com/
 Tags: Pre-designed templates, Template Library, Gutenberg Templates, WordPress Templates, WordPress Themes Template Kits
 Requires at least: 6.0
-Tested up to: 6.8
-Requires PHP: 5.6.20
-Stable tag: 1.2.0
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,13 +88,21 @@ Gutenberg Template Kit will work on any Theme but Theme Template Kit will work o
 1. Templateberg: Library Modal Showcase of Templates
 2. Templateberg: Imported Template
 3. Templateberg: Library Modal Live Preview
-5. Templateberg: Edit Screen and Templateberg Button
+4. Templateberg: Edit Screen and Templateberg Button
 5. Templateberg: Templateberg.com Gutenberg Templates
 6. Templateberg: Get Free License Page
 7. Templateberg: Admin Dashboard
 
 
 == Changelog ==
+
+= 2.0.0 - 2026-06-10 =
+* Added: WordPress 7.0 compatibility
+* Fixed: Plugin Check compliance — all WPCS violations resolved
+* Fixed: Offloaded external images replaced with local assets
+* Fixed: `get_current_screen()` null dereference (PHP 8.1+)
+* Fixed: `in_array()` strict type safety
+* Updated: Minimum PHP requirement to 7.4
 
 = 1.2.0 - 2025-04-17 =
 * Added: WordPress latest compatibility

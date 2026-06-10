@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or die;
 /**
  * The file that defines the core plugin class
  *

@@ -1,7 +1,6 @@
 <?php
 /**If this file is called directly, abort.*/
-if ( ! defined( 'WPINC' ) ) {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -14,16 +13,20 @@ if ( ! defined( 'WPINC' ) ) {
  * @wordpress-plugin
  * Plugin Name:       Templateberg - Gutenberg Templates, WordPress Themes Template Kits & WordPress Templates
  * Description:       Easily Import pre-designed templates with starter content on your website and instantly build an elegant website with WordPress. Templateberg content Gutenberg Templates, Patterns and WordPress Theme Template Kits.
- * Version:           1.2.0
+ * Version:           2.0.0
+ * Plugin URI:        https://www.templateberg.com/
  * Author:            templateberg
  * Author URI:        https://www.templateberg.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       templateberg
+ * Requires at least: 6.0
+ * Tested up to:      7.0
+ * Requires PHP:      7.4
  */
 
 /*Define Constants for this plugin*/
-const TEMPLATEBERG_VERSION     = '1.2.0';
+const TEMPLATEBERG_VERSION     = '2.0.0';
 const TEMPLATEBERG_PLUGIN_NAME = 'templateberg';
 define( 'TEMPLATEBERG_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TEMPLATEBERG_URL', plugin_dir_url( __FILE__ ) );
@@ -33,7 +36,7 @@ define( 'TEMPLATEBERG_SCRIPT_PREFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBU
  * The code that runs during plugin activation.
  * This action is documented in includes/class-templateberg-activator.php
  */
-function activate_templateberg() {
+function activate_templateberg() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	require_once TEMPLATEBERG_PATH . 'includes/class-templateberg-activator.php';
 	Templateberg_Activator::activate();
 }
@@ -48,7 +51,7 @@ require TEMPLATEBERG_PATH . 'includes/class-templateberg.php';
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-templateberg-deactivator.php
  */
-function deactivate_templateberg() {
+function deactivate_templateberg() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	require_once TEMPLATEBERG_PATH . 'includes/class-templateberg-deactivator.php';
 	Templateberg_Deactivator::deactivate();
 }
@@ -67,7 +70,7 @@ register_deactivation_hook( __FILE__, 'deactivate_templateberg' );
  */
 if ( ! function_exists( 'run_templateberg' ) ) {
 
-	function run_templateberg() {
+	function run_templateberg() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 
 		return Templateberg::instance();
 	}

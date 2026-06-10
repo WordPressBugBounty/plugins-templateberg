@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) or die;
+
 if ( ! function_exists( 'templateberg_is_edit_page' ) ) {
 	function templateberg_is_edit_page() {
 		// make sure we are on the backend
@@ -125,9 +127,9 @@ if ( ! function_exists( 'templateberg_get_free_templates_html' ) ) {
 /**
  * check if Gutentor activated
  */
-if ( ! function_exists( 'templateburg_is_gutentor_active' ) ) {
+if ( ! function_exists( 'templateberg_is_gutentor_active' ) ) {
 
-	function templateburg_is_gutentor_active() {
+	function templateberg_is_gutentor_active() {
 		return class_exists( 'Gutentor' ) ? true : false;
 	}
 }
@@ -136,9 +138,9 @@ if ( ! function_exists( 'templateburg_is_gutentor_active' ) ) {
 /**
  * check if Gutentor activated
  */
-if ( ! function_exists( 'templateburg_is_advanced_import_active' ) ) {
+if ( ! function_exists( 'templateberg_is_advanced_import_active' ) ) {
 
-	function templateburg_is_advanced_import_active() {
+	function templateberg_is_advanced_import_active() {
 		return class_exists( 'Advanced_Import' ) ? true : false;
 	}
 }
@@ -160,13 +162,10 @@ if ( ! function_exists( 'templateberg_get_transients_by_prefix' ) ) {
 		/*Add Prefix*/
 		$prefix = $wpdb->esc_like( '_transient_' . $prefix );
 
-		/*SQL*/
-		$sql = "SELECT `option_name` FROM $wpdb->options WHERE `option_name` LIKE '%s'";
-
 		/*Get transients*/
-		$transients = $wpdb->get_results(
+		$transients = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
-				$sql,
+				"SELECT `option_name` FROM $wpdb->options WHERE `option_name` LIKE %s",
 				$prefix . '%'
 			),
 			ARRAY_A
@@ -225,17 +224,7 @@ if ( ! function_exists( 'templateberg_delete_transients_by_prefix' ) ) {
  * @return String
  */
 if ( ! function_exists( 'templateberg_pagination' ) ) {
-	function templateberg_pagination( $paged = false, $max_num_pages = false ) {
-		$da_link      = get_post_type_archive_link( 'download' );
-		$nextDisabled = ( $paged + 1 ) > $max_num_pages ? 'tb-list__page-disabled' : '';
-		$prevDisabled = ( $paged - 1 ) < 1 ? 'tb-list__page-disabled' : '';
-		$prevPage     = ( $paged - 1 ) < 1 ? 1 : $paged - 1;
-		$nextPage     = ( $paged + 1 ) > $max_num_pages ? $max_num_pages : $paged + 1;
-
-		$phtml  = '';
-		$phtml .= '<div class="tb-list__navigation"><nav aria-label="Page navigation"><ul class="tb-list__pagination">';
-		$phtml .= '<li class="tb-list__page-item ' . $prevDisabled . '"><a class="tb-list__page-link" href="' . esc_url( $da_link ) . 'page/' . $prevPage . '" data-gpage="' . esc_html( $prevPage ) . '">' . esc_html__( 'Previous', 'templateberg' ) . '</a></li>';
-
+	function templateberg_pagination( $paged = false, $max_num_pages = false, $base_url = '' ) {
 		if ( ! $paged ) {
 			$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 		}
@@ -246,38 +235,54 @@ if ( ! function_exists( 'templateberg_pagination' ) ) {
 				$max_num_pages = 1;
 			}
 		}
-		$mid_pages = $paged >= 3 ? array( $paged - 1, $paged, $paged + 1 ) : array( 1, 2, 3 );
-		if ( $max_num_pages > 1 ) {
-			if ( ! in_array( 1, $mid_pages ) ) {
-				$is_active = $paged == 1 ? ' tb-list__page-active' : '';
-				$phtml    .= '<li class="tb-list__page-item ' . $is_active . '">
-                    <a class="tb-list__page-link" href="' . esc_url( $da_link ) . 'page/1" data-gpage="1">' . __( '1', 'templateberg' ) . '</a>
-                </li>';
+
+		if ( $max_num_pages <= 1 ) {
+			return '';
+		}
+
+		if ( ! $base_url ) {
+			$base_url = get_pagenum_link( 1 );
+		}
+
+		$prevDisabled = $paged <= 1 ? 'tb-list__page-disabled' : '';
+		$nextDisabled = $paged >= $max_num_pages ? 'tb-list__page-disabled' : '';
+		$prevPage     = $paged <= 1 ? 1 : $paged - 1;
+		$nextPage     = $paged >= $max_num_pages ? $max_num_pages : $paged + 1;
+
+		$page_link = function ( $page_num ) use ( $base_url ) {
+			if ( $page_num <= 1 ) {
+				return esc_url( $base_url );
 			}
-			if ( $paged > 3 ) {
+			return esc_url( add_query_arg( 'paged', $page_num, $base_url ) );
+		};
+
+		$phtml  = '';
+		$phtml .= '<div class="tb-list__navigation"><nav aria-label="Page navigation"><ul class="tb-list__pagination">';
+		$phtml .= '<li class="tb-list__page-item ' . $prevDisabled . '"><a class="tb-list__page-link" href="' . $page_link( $prevPage ) . '" data-gpage="' . esc_html( $prevPage ) . '">' . esc_html__( 'Previous', 'templateberg' ) . '</a></li>';
+
+		$start = max( 1, $paged - 1 );
+		$end   = min( $max_num_pages, $paged + 1 );
+
+		if ( $start > 1 ) {
+			$phtml .= '<li class="tb-list__page-item"><a class="tb-list__page-link" href="' . $page_link( 1 ) . '" data-gpage="1">1</a></li>';
+			if ( $start > 2 ) {
 				$phtml .= '<li class="tb-list__page-item tb-list__pagination-dots"><a class="tb-list__page-link" href="#">...</a></li>';
 			}
-			foreach ( $mid_pages as $i ) {
-				if ( $max_num_pages >= $i ) {
-					$is_active = $paged == $i ? ' tb-list__page-active' : '';
-					$phtml    .= '<li class="tb-list__page-item' . $is_active . '">
-                    <a class="tb-list__page-link" href="' . esc_url( $da_link ) . 'page/' . $i . '" data-gpage="' . $i . '">' . __( $i, 'templateberg' ) . '</a>
-                </li>';
-				}
-			}
-			if ( $max_num_pages > $paged + 1 ) {
-				if ( $max_num_pages > 3 ) {
-					$phtml .= '<li class="tb-list__page-item tb-list__pagination-dots"><a class="tb-list__page-link" href="#">...</a></li>';
-				}
-				if ( $max_num_pages > 3 ) {
-					$is_active = $paged == $max_num_pages ? ' tb-list__page-active' : '';
-					$phtml    .= '<li class="tb-list__page-item  ' . $is_active . '">
-                    <a class="tb-list__page-link" href="' . esc_url( $da_link ) . 'page/' . $max_num_pages . '" data-gpage="' . $max_num_pages . '">' . __( $max_num_pages, 'templateberg' ) . '</a>
-                </li>';
-				}
-			}
 		}
-		$phtml .= ' <li class="tb-list__page-item ' . $nextDisabled . '"><a class="tb-list__page-link" href="' . esc_url( $da_link ) . 'page/' . $nextPage . '" data-gpage="' . esc_html( $nextPage ) . '">' . esc_html__( 'Next', 'templateberg' ) . '</a></li>';
+
+		for ( $i = $start; $i <= $end; $i++ ) {
+			$is_active = $paged === $i ? ' tb-list__page-active' : '';
+			$phtml    .= '<li class="tb-list__page-item' . $is_active . '"><a class="tb-list__page-link" href="' . $page_link( $i ) . '" data-gpage="' . $i . '">' . (int) $i . '</a></li>';
+		}
+
+		if ( $end < $max_num_pages ) {
+			if ( $end < $max_num_pages - 1 ) {
+				$phtml .= '<li class="tb-list__page-item tb-list__pagination-dots"><a class="tb-list__page-link" href="#">...</a></li>';
+			}
+			$phtml .= '<li class="tb-list__page-item"><a class="tb-list__page-link" href="' . $page_link( $max_num_pages ) . '" data-gpage="' . $max_num_pages . '">' . (int) $max_num_pages . '</a></li>';
+		}
+
+		$phtml .= '<li class="tb-list__page-item ' . $nextDisabled . '"><a class="tb-list__page-link" href="' . $page_link( $nextPage ) . '" data-gpage="' . esc_html( $nextPage ) . '">' . esc_html__( 'Next', 'templateberg' ) . '</a></li>';
 		$phtml .= '</ul></nav></div>';
 		return $phtml;
 	}
@@ -313,7 +318,7 @@ if ( ! function_exists( 'templateberg_is_current_theme_template_available' ) ) {
 			$is_available = true;
 		} elseif ( empty( templateberg_connect()->get_current_theme_purchase_templates_id() ) ) {
 			$is_available = false;
-		} elseif ( in_array( $item['id'], templateberg_connect()->get_current_theme_purchase_templates_id() ) ) {
+		} elseif ( in_array( $item['id'], templateberg_connect()->get_current_theme_purchase_templates_id(), true ) ) {
 			$is_available = true;
 		}
 		return $is_available;
@@ -384,22 +389,32 @@ if ( ! function_exists( 'templateberg_set_gutenberg_templates' ) ) {
 			$dir        = trailingslashit( $upload_dir['basedir'] ) . 'templateberg' . DIRECTORY_SEPARATOR;
 
 			WP_Filesystem();
+			if ( ! $wp_filesystem ) {
+				return array( 'is_set' => false, 'message' => array( __( 'Unable to connect to filesystem.', 'templateberg' ) ) );
+			}
+			/** @var WP_Filesystem_Base $wp_filesystem */
 			if ( ! $wp_filesystem->is_dir( $dir ) ) {
-				$message[] = $dir . __( ' not exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s not exists', 'templateberg' ), $dir );
 				if ( $wp_filesystem->mkdir( $dir ) ) {
-					$message[] = $dir . __( ' created', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s created', 'templateberg' ), $dir );
 				} else {
-					$message[] = $dir . __( ' create permission issue', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s create permission issue', 'templateberg' ), $dir );
 				}
 			} else {
-				$message[] = $dir . __( ' exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s exists', 'templateberg' ), $dir );
 			}
 			$templates_list = wp_json_encode( $templates_list );
 			if ( $wp_filesystem->put_contents( $dir . 'gt-' . $paged . '.json', $templates_list, 0644 ) ) {
 				$is_set    = true;
-				$message[] = __( 'Successfully created file ', 'templateberg' ) . 'gt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Successfully created file %s', 'templateberg' ), 'gt-' . $paged . '.json' );
 			} else {
-				$message[] = __( 'Permission denied to create file ', 'templateberg' ) . 'gt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Permission denied to create file %s', 'templateberg' ), 'gt-' . $paged . '.json' );
 			}
 		} else {
 			$is_set = true;
@@ -457,9 +472,7 @@ if ( ! function_exists( 'templateberg_set_editor_templates' ) ) {
 	function templateberg_set_editor_templates( $templates_list, $paged = 1 ) {
 		$is_set  = false;
 		$message = array();
-		ob_start();
 		$is_transient_saved = set_transient( 'templateberg_edt_' . $paged, $templates_list, WEEK_IN_SECONDS );
-		ob_clean();
 		if ( $is_transient_saved !== true ) {
 			global $wp_filesystem;
 			if ( ! $wp_filesystem ) {
@@ -469,22 +482,32 @@ if ( ! function_exists( 'templateberg_set_editor_templates' ) ) {
 			$dir        = trailingslashit( $upload_dir['basedir'] ) . 'templateberg' . DIRECTORY_SEPARATOR;
 
 			WP_Filesystem();
+			if ( ! $wp_filesystem ) {
+				return array( 'is_set' => false, 'message' => array( __( 'Unable to connect to filesystem.', 'templateberg' ) ) );
+			}
+			/** @var WP_Filesystem_Base $wp_filesystem */
 			if ( ! $wp_filesystem->is_dir( $dir ) ) {
-				$message[] = $dir . __( ' not exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s not exists', 'templateberg' ), $dir );
 				if ( $wp_filesystem->mkdir( $dir ) ) {
-					$message[] = $dir . __( ' created', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s created', 'templateberg' ), $dir );
 				} else {
-					$message[] = $dir . __( ' create permission issue', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s create permission issue', 'templateberg' ), $dir );
 				}
 			} else {
-				$message[] = $dir . __( ' exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s exists', 'templateberg' ), $dir );
 			}
 			$templates_list = wp_json_encode( $templates_list );
 			if ( $wp_filesystem->put_contents( $dir . 'edt-' . $paged . '.json', $templates_list, 0644 ) ) {
 				$is_set    = true;
-				$message[] = __( 'Successfully created file ', 'templateberg' ) . 'edt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Successfully created file %s', 'templateberg' ), 'edt-' . $paged . '.json' );
 			} else {
-				$message[] = __( 'Permission denied to create file ', 'templateberg' ) . 'edt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Permission denied to create file %s', 'templateberg' ), 'edt-' . $paged . '.json' );
 			}
 		} else {
 			$is_set = true;
@@ -542,7 +565,7 @@ if ( ! function_exists( 'templateberg_set_theme_templates' ) ) {
 	function templateberg_set_theme_templates( $templates_list, $paged = 1 ) {
 		$is_set  = false;
 		$message = array();
-		if ( set_transient( 'templateberg_tt_' . $paged, $templates_list, 'WEEK_IN_SECONDS' ) !== true ) {
+		if ( set_transient( 'templateberg_tt_' . $paged, $templates_list, WEEK_IN_SECONDS ) !== true ) {
 			global $wp_filesystem;
 			if ( ! $wp_filesystem ) {
 				require_once ABSPATH . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'file.php';
@@ -551,22 +574,32 @@ if ( ! function_exists( 'templateberg_set_theme_templates' ) ) {
 			$dir        = trailingslashit( $upload_dir['basedir'] ) . 'templateberg' . DIRECTORY_SEPARATOR;
 
 			WP_Filesystem();
+			if ( ! $wp_filesystem ) {
+				return array( 'is_set' => false, 'message' => array( __( 'Unable to connect to filesystem.', 'templateberg' ) ) );
+			}
+			/** @var WP_Filesystem_Base $wp_filesystem */
 			if ( ! $wp_filesystem->is_dir( $dir ) ) {
-				$message[] = $dir . __( ' not exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s not exists', 'templateberg' ), $dir );
 				if ( $wp_filesystem->mkdir( $dir ) ) {
-					$message[] = $dir . __( ' created', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s created', 'templateberg' ), $dir );
 				} else {
-					$message[] = $dir . __( ' create permission issue', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s create permission issue', 'templateberg' ), $dir );
 				}
 			} else {
-				$message[] = $dir . __( ' exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s exists', 'templateberg' ), $dir );
 			}
 			$templates_list = wp_json_encode( $templates_list );
 			if ( $wp_filesystem->put_contents( $dir . 'tt-' . $paged . '.json', $templates_list, 0644 ) ) {
 				$is_set    = true;
-				$message[] = __( 'Successfully created file ', 'templateberg' ) . 'tt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Successfully created file %s', 'templateberg' ), 'tt-' . $paged . '.json' );
 			} else {
-				$message[] = __( 'Permission denied to create file ', 'templateberg' ) . 'tt-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Permission denied to create file %s', 'templateberg' ), 'tt-' . $paged . '.json' );
 			}
 		} else {
 			$is_set = true;
@@ -629,7 +662,7 @@ if ( ! function_exists( 'templateberg_set_current_theme_templates' ) ) {
 		} else {
 			$theme = get_stylesheet();
 		}
-		if ( set_transient( 'templateberg_ct_' . $theme . '_templates_' . $paged, $templates_list, 'WEEK_IN_SECONDS' ) !== true ) {
+		if ( set_transient( 'templateberg_ct_' . $theme . '_templates_' . $paged, $templates_list, WEEK_IN_SECONDS ) !== true ) {
 			global $wp_filesystem;
 			if ( ! $wp_filesystem ) {
 				require_once ABSPATH . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'file.php';
@@ -638,22 +671,32 @@ if ( ! function_exists( 'templateberg_set_current_theme_templates' ) ) {
 			$dir        = trailingslashit( $upload_dir['basedir'] ) . 'templateberg' . DIRECTORY_SEPARATOR;
 
 			WP_Filesystem();
+			if ( ! $wp_filesystem ) {
+				return array( 'is_set' => false, 'message' => array( __( 'Unable to connect to filesystem.', 'templateberg' ) ) );
+			}
+			/** @var WP_Filesystem_Base $wp_filesystem */
 			if ( ! $wp_filesystem->is_dir( $dir ) ) {
-				$message[] = $dir . __( ' not exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s not exists', 'templateberg' ), $dir );
 				if ( $wp_filesystem->mkdir( $dir ) ) {
-					$message[] = $dir . __( ' created', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s created', 'templateberg' ), $dir );
 				} else {
-					$message[] = $dir . __( ' create permission issue', 'templateberg' );
+					// Translators: %s is the directory path.
+					$message[] = sprintf( __( '%s create permission issue', 'templateberg' ), $dir );
 				}
 			} else {
-				$message[] = $dir . __( ' exists', 'templateberg' );
+				// Translators: %s is the directory path.
+				$message[] = sprintf( __( '%s exists', 'templateberg' ), $dir );
 			}
 			$templates_list = wp_json_encode( $templates_list );
 			if ( $wp_filesystem->put_contents( $dir . 'ct-' . $theme . '-' . $paged . '.json', $templates_list, 0644 ) ) {
 				$is_set    = true;
-				$message[] = __( 'Successfully created file ', 'templateberg' ) . 'ct-' . $theme . '-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Successfully created file %s', 'templateberg' ), 'ct-' . $theme . '-' . $paged . '.json' );
 			} else {
-				$message[] = __( 'Permission denied to create file ', 'templateberg' ) . 'ct-' . $theme . '-' . $paged . '.json';
+				// Translators: %s is the filename.
+				$message[] = sprintf( __( 'Permission denied to create file %s', 'templateberg' ), 'ct-' . $theme . '-' . $paged . '.json' );
 			}
 		} else {
 			$is_set = true;

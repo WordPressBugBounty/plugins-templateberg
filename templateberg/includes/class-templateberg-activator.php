@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die;
 /**
  * Fired during plugin activation
  *
@@ -20,9 +21,9 @@
 class Templateberg_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Run activation tasks.
 	 *
-	 * Long Description.
+	 * Sets redirect flag for first activation.
 	 *
 	 * @since    1.0.0
 	 */

@@ -1,6 +1,7 @@
+<?php defined( 'ABSPATH' ) or die; ?>
 <div class="tb-all_content_wrap">
 <?php
-$account_info = templateberg_connect()->get_account();
+$templateberg_account_info = templateberg_connect()->get_account();
 require_once TEMPLATEBERG_PATH . 'includes/admin/templates/header.php';
 ?>
     <div class="tb-account">
@@ -11,12 +12,12 @@ require_once TEMPLATEBERG_PATH . 'includes/admin/templates/header.php';
                         <div class="tb-account__details">
                             <div class="tb-account__profile tb-text__center">
                                 <div class="tb-account__pic">
-                                    <?php echo get_avatar($account_info['email'], 100); ?>
+                                    <?php echo get_avatar($templateberg_account_info['email'], 100); ?>
                                 </div>
                                 <div class="tb-account__info">
                                     <h5>
                                         <a href="https://templateberg.com/dashboard/">
-                                            <?php echo esc_html($account_info['user-name']); ?>
+                                            <?php echo esc_html($templateberg_account_info['user-name']); ?>
                                         </a>
                                     </h5>
                                 </div>
@@ -84,17 +85,17 @@ require_once TEMPLATEBERG_PATH . 'includes/admin/templates/header.php';
                                         <div class="tb-connection__wrap">
                                             <div class="tb-connection__pic">
                                                 <?php
-                                                $site_icon = admin_url('images/w-logo-blue.png');
+                                                $templateberg_site_icon = admin_url('images/w-logo-blue.png');
                                                 if (get_site_icon_url()) {
-                                                    $site_icon = get_site_icon_url();
+                                                    $templateberg_site_icon = get_site_icon_url();
                                                 } elseif (get_theme_mod('custom_logo')) {
-                                                    $custom_logo_id = get_theme_mod('custom_logo');
-                                                    $image = wp_get_attachment_image_src($custom_logo_id, 'full');
-                                                    $site_icon = $image[0];
+                                                    $templateberg_custom_logo_id = get_theme_mod('custom_logo');
+                                                    $templateberg_image = wp_get_attachment_image_src($templateberg_custom_logo_id, 'full');
+                                                    $templateberg_site_icon = $templateberg_image[0];
                                                 }
                                                 ?>
                                                 <img
-                                                        src="<?php echo esc_url($site_icon)?>"
+                                                        src="<?php echo esc_url($templateberg_site_icon)?>"
                                                         alt="<?php echo esc_url(get_bloginfo('name')); ?>"
                                                         width="80"
                                                         height="80"
@@ -129,17 +130,17 @@ require_once TEMPLATEBERG_PATH . 'includes/admin/templates/header.php';
                                         <h6><?php esc_html_e('Account Connection', 'templateberg'); ?></h6>
                                         <div class="tb-connection__wrap">
                                             <div class="tb-connection__pic">
-                                                <?php echo get_avatar($account_info['email'], 80)?>
+                                                <?php echo get_avatar($templateberg_account_info['email'], 80)?>
                                             </div>
                                             <div class="tb-connection__desc">
                                                 <p>
                                                     <?php esc_html_e('Connected as', 'templateberg'); ?>
                                                     <strong>
                                                         <?php
-                                                        echo esc_html($account_info['user-name']);
+                                                        echo esc_html($templateberg_account_info['user-name']);
                                                         ?>
                                                     </strong>
-                                                    <span><?php echo esc_html($account_info['email']);?></span>
+                                                    <span><?php echo esc_html($templateberg_account_info['email']);?></span>
                                                 </p>
                                                 <a href="https://templateberg.com/dashboard/"
                                                    target="_blank"
