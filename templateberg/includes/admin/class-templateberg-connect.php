@@ -98,6 +98,10 @@ if ( ! class_exists( 'Templateberg_Connect' ) ) {
 			if ( ! $account_info ) {
 				return $account_info;
 			}
+			/*Stored meta is not guaranteed to decode to an array; callers merge the result.*/
+			if ( ! is_array( $account_info ) ) {
+				return array();
+			}
 			$user = wp_get_current_user();
 
 			$additional_info = array(

@@ -132,7 +132,9 @@ if ( ! class_exists( 'Templateberg_Gutentor_Connect' ) ) {
 			}
 			$imported = get_user_meta( get_current_user_id(), 'templateberg-gutentor-imd-tmls', true );
 			$imported = json_decode( $imported, true );
-			return array_unique( $imported );
+
+			/*Legacy or corrupt meta does not decode to an array.*/
+			return is_array( $imported ) ? array_unique( $imported ) : array();
 		}
 
 		/**

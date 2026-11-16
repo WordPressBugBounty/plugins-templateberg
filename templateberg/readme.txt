@@ -4,9 +4,9 @@ Contributors: templateberg, gutentor, acmeit, codersantosh
 Donate link: https://www.templateberg.com/
 Tags: Pre-designed templates, Template Library, Gutenberg Templates, WordPress Templates, WordPress Themes Template Kits
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,16 @@ Gutenberg Template Kit will work on any Theme but Theme Template Kit will work o
 
 
 == Changelog ==
+
+= 2.1.0 - 2026-11-16 =
+* Added: Images in imported templates and blocks are downloaded into the Media Library, so imported layouts no longer load images from the template service.
+* Added: Re-importing a template reuses the images it already imported instead of creating duplicates.
+* Added: The editor shows a warning with the affected image URLs when some images could not be imported, instead of finishing silently.
+* Added: The template image import works whether or not the Gutentor plugin is active; when it is active the two plugins share a single implementation.
+* Fixed: Template images could keep the template service's attachment IDs, which pointed at unrelated media on the site doing the import.
+* Fixed: Category counts in the theme template list only counted the last category of each item, so filters showed wrong numbers.
+* Fixed: A missing template detail field could raise a PHP warning when the template list was rendered.
+* Fixed: An account details value that was not an array could raise a PHP warning and break the account page.
 
 = 2.0.0 - 2026-06-10 =
 * Added: WordPress 7.0 compatibility

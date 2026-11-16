@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @wordpress-plugin
  * Plugin Name:       Templateberg - Gutenberg Templates, WordPress Themes Template Kits & WordPress Templates
  * Description:       Easily Import pre-designed templates with starter content on your website and instantly build an elegant website with WordPress. Templateberg content Gutenberg Templates, Patterns and WordPress Theme Template Kits.
- * Version:           2.0.0
+ * Version:           2.1.0
  * Plugin URI:        https://www.templateberg.com/
  * Author:            templateberg
  * Author URI:        https://www.templateberg.com/
@@ -21,12 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       templateberg
  * Requires at least: 6.0
- * Tested up to:      7.0
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  */
 
 /*Define Constants for this plugin*/
-const TEMPLATEBERG_VERSION     = '2.0.0';
+const TEMPLATEBERG_VERSION     = '2.1.0';
 const TEMPLATEBERG_PLUGIN_NAME = 'templateberg';
 define( 'TEMPLATEBERG_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TEMPLATEBERG_URL', plugin_dir_url( __FILE__ ) );

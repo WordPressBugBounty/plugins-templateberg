@@ -215,8 +215,8 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 			);
 
 			/*
-			Connect namespace - Archive Page (proxies templateberg.com)
-			Used by current.js and theme.js pagination
+			 * Connect namespace - Archive Page (proxies templateberg.com)
+			 * Used by current.js and theme.js pagination
 			*/
 			register_rest_route(
 				'connect/v1',
@@ -231,6 +231,103 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 					),
 				)
 			);
+
+			/*
+			 * Additive companion to get_template_data. The primary response keeps
+			 * its existing shape; the editor asks here for the outcome of the
+			 * import it just performed.
+			*/
+			register_rest_route(
+				$namespace,
+				'/import_media_report',
+				array(
+					array(
+						'methods'             => \WP_REST_Server::READABLE,
+						'callback'            => array( $this, 'import_media_report' ),
+						'permission_callback' => function () {
+							return current_user_can( 'edit_posts' );
+						},
+						'args'                => array(
+							'import_request' => array(
+								'type'              => 'string',
+								'required'          => true,
+								'description'       => __( 'Correlation id for this import request.', 'templateberg' ),
+								'sanitize_callback' => array( __CLASS__, 'sanitize_request_id' ),
+							),
+						),
+					),
+				)
+			);
+		}
+
+		/**
+		 * Normalize the import correlation id.
+		 *
+		 * Declared locally so route registration never depends on the Gutentor
+		 * helper being present.
+		 *
+		 * @since 2.0.0
+		 * @param mixed $value Raw value.
+		 * @return string
+		 */
+		public static function sanitize_request_id( $value ) {
+			if ( ! is_string( $value ) ) {
+				return '';
+			}
+			$value = preg_replace( '/[^A-Za-z0-9_-]/', '', $value );
+			return substr( (string) $value, 0, 64 );
+		}
+
+		/**
+		 * Return the media-localization outcome for one import request.
+		 *
+		 * @since 2.0.0
+		 * @param WP_REST_Request $request Full details about the request.
+		 * @return WP_REST_Response
+		 */
+		public function import_media_report( \WP_REST_Request $request ) {
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				return rest_ensure_response( false );
+			}
+
+			$user_id = get_current_user_id();
+			$notice  = '';
+			if ( $user_id ) {
+				$key = 'templateberg_import_media_notice_' . $user_id;
+				$notice = get_transient( $key );
+				if ( $notice ) {
+					delete_transient( $key );
+				}
+			}
+
+			$report = class_exists( '\Gutentor_Import_Media' ) && method_exists( 'Gutentor_Import_Media', 'take_request_report' )
+				? \Gutentor_Import_Media::take_request_report( $request->get_param( 'import_request' ) )
+				: array();
+
+			$images = array();
+			if ( ! empty( $report['failed'] ) ) {
+				foreach ( $report['failed'] as $failure ) {
+					$images[] = array(
+						'url'     => isset( $failure['url'] ) ? $failure['url'] : '',
+						'message' => isset( $failure['message'] ) ? $failure['message'] : '',
+					);
+				}
+			}
+
+			$response = array(
+				'failed'    => count( $images ),
+				'images'    => $images,
+				'reused'    => isset( $report['reused'] ) ? (int) $report['reused'] : 0,
+				'localized' => isset( $report['localized'] ) ? (int) $report['localized'] : 0,
+				'status'    => empty( $images ) ? 'clean' : 'partial',
+			);
+
+			if ( $notice ) {
+				$response['message'] = $notice;
+				$response['status']  = empty( $images ) ? 'error' : 'partial';
+			}
+
+			return rest_ensure_response( $response );
 		}
 
 		/**
@@ -331,9 +428,9 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 				);
 
 				if ( ! is_wp_error( $raw_json ) ) {
-					$get_templates      = json_decode( wp_remote_retrieve_body( $raw_json ), true );
-					$templates_list_old = $get_templates['templates'];
-					if ( json_last_error() === JSON_ERROR_NONE ) {
+					$get_templates = json_decode( wp_remote_retrieve_body( $raw_json ), true );
+					if ( json_last_error() === JSON_ERROR_NONE && is_array( $get_templates ) ) {
+						$templates_list_old = isset( $get_templates['templates'] ) ? $get_templates['templates'] : array();
 						if ( is_array( $templates_list_old ) ) {
 							$templates_list = array();
 							$purchase_ids   = templateberg_connect()->get_purchase_templates_id();
@@ -352,8 +449,8 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 							}
 						}
 
-						$max_pages       = $get_templates['max_pages'];
-						$total_templates = $get_templates['found_posts'];
+						$max_pages       = isset( $get_templates['max_pages'] ) ? $get_templates['max_pages'] : 0;
+						$total_templates = isset( $get_templates['found_posts'] ) ? $get_templates['found_posts'] : 0;
 					} else {
 						return new WP_Error(
 							'rest_templateberg_json_error',
@@ -411,7 +508,8 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 						}
 					}
 				}
-				$templates_list = array_merge( $purchased_templates, $templates_list );
+				/*A missing/undecodable API body leaves this falsy; merge only real arrays.*/
+				$templates_list = array_merge( $purchased_templates, is_array( $templates_list ) ? $templates_list : array() );
 			}
 
 			$response_data    = array(
@@ -520,7 +618,59 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 				$template_json['gutentor']['template_kits_total'] =
 					templateberg_gutentor_connect()->get_total_template_kits();
 			}
+
+			$template_json = $this->localize_import_media( $template_json, $this->sanitize_request_id( $request->get_param( 'import_request' ) ) );
+
 			return rest_ensure_response( $template_json );
+		}
+
+		/**
+		 * Download the images referenced by a template into the Media Library.
+		 *
+		 * The localizer is a shared library: Gutentor provides the canonical copy
+		 * and Templateberg vendors the same file, loaded only when Gutentor is not
+		 * active. Either way the class is present for supported configurations, so
+		 * no import is disabled and no configuration is narrowed.
+		 *
+		 * If an older Gutentor defines the class without the current API, the
+		 * vendored copy cannot be loaded (PHP cannot redeclare a class) and the
+		 * payload is returned unchanged. The editor is told exactly that, so the
+		 * user gets an update instruction instead of silent hotlinking.
+		 *
+		 * @since 2.0.0
+		 * @param mixed  $payload        Template payload returned to the editor.
+		 * @param string $import_request Correlation id of this import request.
+		 * @return mixed Payload with local media references.
+		 */
+		private function localize_import_media( $payload, $import_request = '' ) {
+			if ( ! is_array( $payload ) ) {
+				return $payload;
+			}
+
+			if ( ! class_exists( 'Templateberg' ) || ! \Templateberg::has_import_media() ) {
+				$this->set_media_notice(
+					__( 'The images in this template could not be imported because the installed Gutentor version is too old. Please update Gutentor and import the template again.', 'templateberg' )
+				);
+				return $payload;
+			}
+
+			$localized = \Gutentor_Import_Media::localize( $payload );
+			\Gutentor_Import_Media::report( $localized['report'], $import_request );
+
+			return $localized['data'];
+		}
+
+		/**
+		 * Queue an actionable notice for the next import response.
+		 *
+		 * @param string $message Message to show.
+		 * @return void
+		 */
+		private function set_media_notice( $message ) {
+			$user_id = get_current_user_id();
+			if ( $user_id ) {
+				set_transient( 'templateberg_import_media_notice_' . $user_id, $message, 5 * MINUTE_IN_SECONDS );
+			}
 		}
 
 		/**
@@ -588,8 +738,9 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 		 */
 		public function get_data_from_url( $url ) {
 
-			$url_array  = explode( '/', $url );
-			$block_id   = $url_array[ count( $url_array ) - 2 ];
+			$url_array = explode( '/', (string) $url );
+			/*A URL with no slash has no second-to-last segment; avoid index -1.*/
+			$block_id = count( $url_array ) > 1 ? $url_array[ count( $url_array ) - 2 ] : '';
 			$block_json = get_transient( 'templateberg_tj_' . $block_id );
 
 			/*Get Json*/
@@ -706,18 +857,25 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 				if ( ! is_wp_error( $raw_json ) ) {
 					$get_templates = json_decode( wp_remote_retrieve_body( $raw_json ), true );
+					if ( ! is_array( $get_templates ) ) {
+						return new WP_Error(
+							'rest_templateberg_json_error',
+							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+							array( 'status' => 500 )
+						);
+					}
 
 					$templates_list  = apply_filters(
 						'templateberg_gutenberg_templates',
-						$get_templates['templates']
+						isset( $get_templates['templates'] ) ? $get_templates['templates'] : array()
 					);
 					$max_pages       = apply_filters(
 						'templateberg_gutenberg_templates_max_pages',
-						$get_templates['max_pages']
+						isset( $get_templates['max_pages'] ) ? $get_templates['max_pages'] : 0
 					);
 					$total_templates = apply_filters(
 						'templateberg_gutenberg_templates_found_posts',
-						$get_templates['found_posts']
+						isset( $get_templates['found_posts'] ) ? $get_templates['found_posts'] : 0
 					);
 
 					/*Store on transient*/
@@ -816,18 +974,25 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 				if ( ! is_wp_error( $raw_json ) ) {
 					$get_templates = json_decode( wp_remote_retrieve_body( $raw_json ), true );
+					if ( ! is_array( $get_templates ) ) {
+						return new WP_Error(
+							'rest_templateberg_json_error',
+							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+							array( 'status' => 500 )
+						);
+					}
 
 					$templates_list  = apply_filters(
 						'templateberg_theme_templates',
-						$get_templates['templates']
+						isset( $get_templates['templates'] ) ? $get_templates['templates'] : array()
 					);
 					$max_pages       = apply_filters(
 						'templateberg_theme_templates_max_pages',
-						$get_templates['max_pages']
+						isset( $get_templates['max_pages'] ) ? $get_templates['max_pages'] : 0
 					);
 					$total_templates = apply_filters(
 						'templateberg_theme_templates_found_posts',
-						$get_templates['found_posts']
+						isset( $get_templates['found_posts'] ) ? $get_templates['found_posts'] : 0
 					);
 
 					/*Store on transient*/
@@ -854,8 +1019,29 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 		 * @return bool|WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 		 */
 		public function current_theme_templates( \WP_REST_Request $request ) {
-			if ( $request->get_param( 'theme' ) ) {
-				$theme = $request->get_param( 'theme' )['stylesheet'];
+			$theme_param = $request->get_param( 'theme' );
+
+			/*The theme parameter is a theme-info array; anything else is caller error, not a silent fallback.*/
+			if ( null !== $theme_param && '' !== $theme_param ) {
+				if ( ! is_array( $theme_param ) ) {
+					return new WP_Error(
+						'rest_templateberg_invalid_theme',
+						__( 'The theme parameter must be an object.', 'templateberg' ),
+						array( 'status' => 400 )
+					);
+				}
+				if ( isset( $theme_param['stylesheet'] ) ) {
+					if ( ! is_string( $theme_param['stylesheet'] ) || '' === $theme_param['stylesheet'] ) {
+						return new WP_Error(
+							'rest_templateberg_invalid_theme_stylesheet',
+							__( 'The theme stylesheet must be a non-empty string.', 'templateberg' ),
+							array( 'status' => 400 )
+						);
+					}
+					$theme = $theme_param['stylesheet'];
+				} else {
+					$theme = get_stylesheet();
+				}
 			} else {
 				$theme = get_stylesheet();
 			}
@@ -892,18 +1078,25 @@ if ( ! class_exists( 'Templateberg_Template_Api' ) ) {
 
 				if ( ! is_wp_error( $raw_json ) ) {
 					$get_templates = json_decode( wp_remote_retrieve_body( $raw_json ), true );
+					if ( ! is_array( $get_templates ) ) {
+						return new WP_Error(
+							'rest_templateberg_json_error',
+							__( 'Something went wrong. Please contact to templateberg.com', 'templateberg' ),
+							array( 'status' => 500 )
+						);
+					}
 
 					$templates_list  = apply_filters(
 						'templateberg_current_theme_' . $theme . '_templates',
-						$get_templates['templates']
+						isset( $get_templates['templates'] ) ? $get_templates['templates'] : array()
 					);
 					$max_pages       = apply_filters(
 						'templateberg_current_theme_' . $theme . '_templates_max_pages',
-						$get_templates['max_pages']
+						isset( $get_templates['max_pages'] ) ? $get_templates['max_pages'] : 0
 					);
 					$total_templates = apply_filters(
 						'templateberg_current_theme_' . $theme . '_templates_found_posts',
-						$get_templates['found_posts']
+						isset( $get_templates['found_posts'] ) ? $get_templates['found_posts'] : 0
 					);
 					if ( ! $templates_list ) {
 						$templates_list = 'nothing';

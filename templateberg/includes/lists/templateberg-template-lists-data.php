@@ -254,9 +254,9 @@ class Templateberg_Template_Lists_Data {
 								array_push( $this->normalThemeFreeCats, $cat );
 								$this->set_free_counts( $type, $cat );
 							}
+							array_push( $this->normalThemeCats, $cat );
+							$this->set_counts( $type, $cat );
 						}
-						array_push( $this->normalThemeCats, $cat );
-						$this->set_counts( $type, $cat );
 					} elseif ( 'gutenberg' === $type ) {
 						foreach ( $list['categories'] as $cat ) {
 							if ( isset( $list['is_pro'] ) ) {

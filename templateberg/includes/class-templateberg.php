@@ -146,6 +146,24 @@ class Templateberg {
 		require_once TEMPLATEBERG_PATH . 'includes/admin/class-templateberg-gutentor-connect.php';
 		require_once TEMPLATEBERG_PATH . 'includes/admin/class-templateberg-connect.php';
 
+		/*
+		 * Shared media localizer.
+		 *
+		 * Templateberg templates are Gutentor block markup, and the block editor
+		 * inserts them client-side, so images must be downloaded before the
+		 * payload leaves the server. That logic is generic (it walks any decoded
+		 * JSON and any HTML/CSS string), so it is vendored here as a shared
+		 * library instead of being an optional dependency on Gutentor.
+		 *
+		 * It is loaded on plugins_loaded:0 rather than during plugin inclusion so
+		 * that an active Gutentor has always defined the class first and its copy
+		 * — the canonical one, which its own import endpoint also uses — wins.
+		 * The vendored file therefore only takes effect when Gutentor is inactive,
+		 * and it declares the class solely when it is not already defined, so a
+		 * second copy can never collide or redefine it.
+		 */
+		add_action( 'plugins_loaded', array( __CLASS__, 'load_import_media' ), 0 );
+
 		/*Templates*/
 		require_once TEMPLATEBERG_PATH . 'includes/lists/templateberg-template-lists-data.php';
 		require_once TEMPLATEBERG_PATH . 'includes/lists/class-templateberg-gutenberg-templates.php';
@@ -155,6 +173,42 @@ class Templateberg {
 		require_once TEMPLATEBERG_PATH . 'includes/admin/class-templateberg-template-api.php';
 
 		$this->loader = new Templateberg_Loader();
+	}
+
+	/**
+	 * Load the shared media localizer unless a capable one is already present.
+	 *
+	 * Runs on plugins_loaded:0, after every plugin file has been included, so an
+	 * active Gutentor has always registered its own class first. The vendored
+	 * copy then does nothing, which keeps one canonical implementation in charge
+	 * and avoids a class collision.
+	 *
+	 * The check is on the method, not only the class name: an older Gutentor may
+	 * define Gutentor_Import_Media without the current API, and loading the
+	 * vendored copy is not possible in that case because PHP cannot redeclare the
+	 * class. That version gap is reported by localize_import_media() instead.
+	 *
+	 * @since 2.1.0
+	 * @return void
+	 */
+	public static function load_import_media() {
+		if ( class_exists( 'Gutentor_Import_Media' ) ) {
+			return;
+		}
+
+		require_once TEMPLATEBERG_PATH . 'includes/lib/gutentor-import-media.php';
+	}
+
+	/**
+	 * Whether a usable localizer is available.
+	 *
+	 * @since 2.1.0
+	 * @return bool
+	 */
+	public static function has_import_media() {
+		return class_exists( 'Gutentor_Import_Media' )
+			&& method_exists( 'Gutentor_Import_Media', 'localize' )
+			&& method_exists( 'Gutentor_Import_Media', 'report' );
 	}
 
 	/**

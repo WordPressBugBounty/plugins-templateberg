@@ -85,7 +85,7 @@ if ( ! function_exists( 'templateberg_get_payment_info_html' ) ) {
 
 					<div class="tb-purchase__plan">
 						<span class="tb-purchase__desc">
-							<?php echo wp_kses_post( $pi['details'] ); ?>
+							<?php echo wp_kses_post( isset( $pi['details'] ) ? $pi['details'] : '' ); ?>
 						</span>
 					</div>
 				</div>
